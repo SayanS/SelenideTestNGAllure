@@ -12,32 +12,21 @@ import java.util.*;
 @Test
 @Features("SignIn")
 @Stories("Checking ability to sign in")
-public class SignInTest extends TestBase {
+public class SignInTest extends TestBase  {
 
     @DataProvider(name = "userProvider")
-    public Iterator<Object[]> userProvider() {
-        List<User> users = new ArrayList<>(Arrays.asList(new User("garmsayan@gmail.com", "Rfhfylfitkm12r"),
-                new User("lloydpharm@gmail.com", "Rfhfylfitkm")
-        ));
-        Collection<Object[]> data = new ArrayList<Object[]>();
-        users.forEach(user -> data.add(new Object[]{user}));
-        return data.iterator();
+    public Object[][] getNames() {
+        User[][] result = new User[2][1];
+        result[0][0] = new User("garmsayan@gmail.com", "Rfhfylfitkm12r");
+        result[1][0] = new User("lloydpharm@gmail.com", "Rfhfylfitkm");
+        return result;
     }
-
-//    @DataProvider(name = "userProvider")
-//    public Object[][] userProvider() {
-//        return new Object[][]{new Object[]{"garmsayan@gmail.com", "Rfhfylfitkm12r"},
-//                new Object[]{"lloydpharm@gmail.com", "Rfhfylfitkm"}};
-//    }
-
 
     @Test(dataProvider = "userProvider")
     public void signIn(User user) {
         onGooglePage().clickOnSignInButton()
                 .enterUserEmail(user.getEmail())
                 .enterUserPassword(user.getPassword()).ensureAccountButtonisDisplayed();
-
-
     }
 
 }
