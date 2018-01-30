@@ -10,20 +10,20 @@ import static com.codeborne.selenide.Selenide.page;
 
 public class GooglePage {
 
-    protected final By accountButton=By.xpath(".//a[contains(@title,'Google Account:')]");
+    private By accountButton=By.xpath(".//a[contains(@title,'Google Account:')]");
 
-    @Step("Enter into search field and click Enter")
+    @Step
     public SearchResultsPage searchFor(String text) {
         $("#lst-ib").val(text).pressEnter();
         return page(SearchResultsPage.class);
     }
-
+    @Step
     public SignInPage clickOnSignInButton() {
-        $(".//a[contains(@href,'ServiceLogin')]").click();
+        $(By.xpath(".//a[contains(@href,'ServiceLogin')]")).click();
         return page(SignInPage.class);
     }
-
-    public GooglePage ensureAccountButtonisDisplayed(){
+    @Step
+    public GooglePage ensureAccountButtonIsDisplayed(){
         $(accountButton).shouldBe(visible);
         return this;
     }

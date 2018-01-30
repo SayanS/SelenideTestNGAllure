@@ -7,8 +7,6 @@ import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
 
-import java.util.*;
-
 @Test
 @Features("SignIn")
 @Stories("Checking ability to sign in")
@@ -18,7 +16,7 @@ public class SignInTest extends TestBase  {
     public Object[][] getNames() {
         User[][] result = new User[2][1];
         result[0][0] = new User("garmsayan@gmail.com", "Rfhfylfitkm12r");
-        result[1][0] = new User("lloydpharm@gmail.com", "Rfhfylfitkm");
+        result[1][0] = new User("lloydp2017@gmail.com","Rfhfylfitkm12r");
         return result;
     }
 
@@ -26,7 +24,10 @@ public class SignInTest extends TestBase  {
     public void signIn(User user) {
         onGooglePage().clickOnSignInButton()
                 .enterUserEmail(user.getEmail())
-                .enterUserPassword(user.getPassword()).ensureAccountButtonisDisplayed();
+                .clickOnNextButtonAfterEmailEntered()
+                .enterUserPassword(user.getPassword())
+                .clickOnNextButtonAfterPasswordEntered()
+                .ensureAccountButtonIsDisplayed();
     }
 
 }

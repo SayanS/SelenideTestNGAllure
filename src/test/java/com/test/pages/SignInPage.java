@@ -1,29 +1,33 @@
 package com.test.pages;
 
 import org.openqa.selenium.By;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
 public class SignInPage {
-    protected final By emailField = By.xpath(".//input[@id='identifierId']");
-    protected final By nextButtonEmailEntered = By.xpath(".//div[contains(@id,'identifierNext')]/content/span");
-    protected final By nextButtonPasswordEntered = By.xpath(".//div[contains(@id,'passwordNext')]/content/span");
     protected final By profileIdentifierButton = By.xpath(".//div[@id='profileIdentifier']");
     protected final By headingTextTitle = By.xpath(".//*[@id='headingText']");
-    protected final By passwordField = By.xpath(".//input[@name='password']");
-
+    @Step
     public SignInPage enterUserEmail(String emailValue) {
-        $(emailField).val(emailValue);
-        $(nextButtonEmailEntered).click();
+        $(By.xpath(".//input[@id='identifierId']")).val(emailValue);
         return this;
     }
-
-    public GooglePage enterUserPassword(String passwordValue){
-        $(passwordField).val(passwordValue);
-        $(nextButtonPasswordEntered).click();
+    @Step
+    public  SignInPage clickOnNextButtonAfterEmailEntered(){
+        $(By.xpath(".//div[contains(@id,'identifierNext')]")).click();
+        return this;
+    }
+    @Step
+    public SignInPage enterUserPassword(String passwordValue){
+        $(By.xpath(".//input[@name='password']")).val(passwordValue);
+        return this;
+    }
+    @Step
+    public  GooglePage clickOnNextButtonAfterPasswordEntered(){
+        $(By.xpath(".//div[contains(@id,'passwordNext')]")).click();
         return page(GooglePage.class);
     }
-
 
 }
