@@ -14,19 +14,20 @@ import ru.yandex.qatools.allure.annotations.Stories;
 @Features("Checking search")
 @Stories("Checking global search functionality")
 public class GoogleSearchTest extends TestBase {
-    @DataProvider( name = "searchingTextData1" )
+    @DataProvider( name = "searchingTextData1", parallel = true )
     public Object[][] searchingTextData1() {
         return new Object[][]{
                 {"Selenide"},
-                {"Selenium"}
+                {"Selenium"},
+                {"Webdriver"}
         };
     }
 
     @DataProvider( name = "searchingTextData2" )
     public Object[][] searchingTextData2() {
         return new Object[][]{
-                {"Allure"},
-                {"Apium"}
+                {"C#"},
+                {"Java"}
         };
     }
 

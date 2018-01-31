@@ -1,11 +1,7 @@
 package com.test.util;
 
-import com.codeborne.selenide.WebDriverRunner;
 import com.test.pages.GooglePage;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 
@@ -19,29 +15,21 @@ public class TestBase {
 
     @BeforeTest
     public void setUp() {
-        // System.setProperty("webdriver.chrome.driver", "./src/test/resources/webdriver/geckodriver");
-        //System.setProperty("selenide.browser", "chrome");
-        //System.setProperty("selenide.browser.incognito","true");
-//        FirefoxProfile profile = new FirefoxProfile();
+//       System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdriver/geckodriver");
+//       Configuration.dismissModalDialogs = true;
+//       Configuration.browser = "marionette";
+//       FirefoxOptions opts = new FirefoxOptions();
+//       opts.addArguments("-private");
+//       opts.addArguments("--start-maximized");
+//       opts.setCapability("marionette", true);
+//       driver = new FirefoxDriver(opts);
+//       WebDriverRunner.setWebDriver(driver);
 
-//        Configuration.dismissModalDialogs=true;
-//        Configuration.browser = "marionette";
-
-        DesiredCapabilities dc = DesiredCapabilities.firefox();
-        baseUrl = "https://www.google.com/";
-        System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdriver/geckodriver");
-
-        FirefoxOptions opts = new FirefoxOptions();
-        opts.addArguments("-private");
-        opts.addArguments("--start-maximized");
-        opts.setCapability("marionette", true);
-
-        driver = new FirefoxDriver(opts);
-        //driver = new FirefoxDriver(dc);
-        WebDriverRunner.setWebDriver(driver);
-        //   Configuration.dismissModalDialogs=true;
-        //  Configuration.browser = "marionette";
-
+        System.setProperty("browser","com.test.util.CustomWebDriver");
+        baseUrl = System.getProperty("base.url");
+        if(baseUrl==null){
+            baseUrl="https://www.google.com/";
+        }
     }
 
     public GooglePage onGooglePage() {

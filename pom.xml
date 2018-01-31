@@ -10,24 +10,30 @@
     <allure.version>1.5.0.RC2</allure.version>
     <aspectj.version>1.8.3</aspectj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <run.browser>firefox</run.browser>
+    <base.url>https://www.google.com/</base.url>
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>6.10</version>
     </dependency>
+
     <dependency>
       <groupId>ru.yandex.qatools.allure</groupId>
       <artifactId>allure-testng-adaptor</artifactId>
       <version>1.5.4</version>
     </dependency>
+
     <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>selenide</artifactId>
       <version>4.8</version>
     </dependency>
+
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-java-commons</artifactId>
