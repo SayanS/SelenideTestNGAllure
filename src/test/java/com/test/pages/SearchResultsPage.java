@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class SearchResultsPage {
+public class SearchResultsPage extends BasePage {
     @Step
     public SearchResultsPage ensureResultsContains(String text ) {
         $(By.partialLinkText(text)).shouldBe(visible);

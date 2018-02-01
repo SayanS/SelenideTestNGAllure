@@ -17,9 +17,9 @@ public class GoogleSearchTest extends TestBase {
     @DataProvider( name = "searchingTextData1", parallel = true )
     public Object[][] searchingTextData1() {
         return new Object[][]{
-                {"Selenide"},
-                {"Selenium"},
-                {"Webdriver"}
+                {"Selenide",10},
+                {"Selenium", 10},
+                {"Webdriver", 10}
         };
     }
 
@@ -33,21 +33,20 @@ public class GoogleSearchTest extends TestBase {
 
     @Test(dataProvider = "searchingTextData1")
     @Description("1_Some detailed test description")
-    public void userCanSearch1(String text) {
+    public void userCanSearch1(String text, Integer count) {
         onGooglePage()
                 .searchFor(text)
                 .ensureResultsContains(text)
-                .ensureResultsHaveSize(10);
+                .ensureResultsHaveSize(count);
     }
 
-    @Test(dataProvider = "searchingTextData2")
-    @Description("2_Some detailed test description")
-    public void userCanSearch2(String text) {
-        onGooglePage()
-                .searchFor(text)
-                .ensureResultsContains(text)
-                .ensureResultsHaveSize(10);
-    }
+//    @Test(dataProvider = "searchingTextData2")
+//    @Description("2_Some detailed test description")
+//    public void userCanSearch2(String text) {
+//        onGooglePage()
+//                .searchFor(text)
+//                .ensureResultsContains(text);
+//    }
 
 
 }

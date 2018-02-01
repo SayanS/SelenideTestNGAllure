@@ -1,6 +1,7 @@
 package com.test.util;
 
 import com.test.pages.GooglePage;
+import com.test.pages.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
@@ -28,7 +29,8 @@ public class TestBase {
         System.setProperty("browser","com.test.util.CustomWebDriver");
         baseUrl = System.getProperty("base.url");
         if(baseUrl==null){
-            baseUrl="https://www.google.com/";
+//            baseUrl="https://www.google.com/";
+            baseUrl="https://eldorado.ua/";
         }
     }
 
@@ -36,5 +38,11 @@ public class TestBase {
         GooglePage page = open(baseUrl, GooglePage.class);
         return page;
     }
+
+    public HomePage onHomePage(){
+        HomePage page=open(baseUrl,HomePage.class);
+        return page;
+    }
+
 
 }

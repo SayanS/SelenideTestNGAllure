@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
-public class GooglePage {
+public class GooglePage extends BasePage{
 
     private By accountButton=By.xpath(".//a[contains(@title,'Google Account:')]");
 
