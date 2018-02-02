@@ -30,5 +30,5 @@ public class SignInTest extends TestBase {
                 .clickOnNextButtonAfterPasswordEntered()
                 .ensureAccountButtonIsDisplayed().clearCookies();
     }
-
+//    clean test site -Drun.browser=chrome -Dbase.url=https://eldorado.ua/ -DsuiteXml=eldoradoTestng.xml
 }
