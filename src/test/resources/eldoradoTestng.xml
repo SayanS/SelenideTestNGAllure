@@ -3,7 +3,7 @@
 <suite name="SmokeTests" verbose="10" data-provider-thread-count="1">
     <test name="Test1">
         <classes>
-            <class name="com.test.ShopsTest"/>
+            <class name="com.test.ShopTest"/>
         </classes>
     </test>
 </suite>

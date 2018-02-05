@@ -4,11 +4,13 @@ import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.page;
 
-public class HeaderSection extends BasePage {
+public class HeaderSection {
     private By menuItems= By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li/a");
+    private By selectCity= By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li[contains(@class,'city-select')]");
 
     @Step
     public BasePage selectMenuItem(String itemName){
@@ -17,6 +19,11 @@ public class HeaderSection extends BasePage {
             case "Магазины": return page(ShopsPage.class);
             default:return page(BasePage.class);
         }
+    }
+
+    @Step
+    public void ensureThatCityShownInHeaderMenu(String expectedCity){
+        $(selectCity).shouldBe(Condition.exactText(expectedCity));
     }
 
 }
