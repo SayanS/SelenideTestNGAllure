@@ -23,6 +23,7 @@ public class HeaderSection {
 
     @Step
     public void ensureThatCityShownInHeaderMenu(String expectedCity){
+        $(selectCity).waitUntil(Condition.text(expectedCity),5000);
         $(selectCity).shouldBe(Condition.exactText(expectedCity));
     }
 
