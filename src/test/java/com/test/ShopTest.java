@@ -5,7 +5,13 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.models.Shop;
 import com.test.pages.ShopsPage;
+import com.test.util.EndPoint;
+import com.test.util.RestAssuredConfiguration;
 import com.test.util.TestBase;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.apache.http.HttpStatus;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -14,6 +20,9 @@ import ru.yandex.qatools.allure.annotations.Stories;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 @Features("Shop header menu")
 @Stories("Checking features related to Shop item of the Header menu")
@@ -61,28 +70,28 @@ public class ShopTest extends TestBase {
         Integer number = 57;
         Object[][] indexes = new Object[number][1];
         for (int i = 1; i <= number; i++) {
-            indexes[i-1][0] = i;
+            indexes[i - 1][0] = i;
         }
         return indexes;
     }
 
-    @Test(dataProvider = "shopCities")
+    @Test(dataProvider = "shopCities",enabled = false)
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
         shopsPage.isShownAllCities(shopCities);
     }
 
-    @Test(dataProvider = "cityIndexesBestWay")
+    @Test(dataProvider = "cityIndexesBestWay",enabled = false)
     public void checkAbilityToSelectDefaultCityBestWay(Integer index) {
         String selectedCityName;
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
-        selectedCityName = shopsPage.selectCity(index);
+        selectedCityName = shopsPage.selectCity(index - 1);
         shopsPage.headerSection.ensureThatCityShownInHeaderMenu(selectedCityName);
         shopsPage.ensureThatNotificationContains(selectedCityName);
 
     }
 
-    @Test
+    @Test(enabled = false)
     public void checkAbilityToSelectDefaultCity() {
         String selectedCityName;
         Integer totalCities;
@@ -95,7 +104,7 @@ public class ShopTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "cityIndexes")
+    @Test(dataProvider = "cityIndexes", enabled = false)
     public void checkAbilityToSelectDefaultCityParallelExecution(List<Integer> cityIndexes) {
         Integer totalCities;
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
@@ -128,6 +137,32 @@ public class ShopTest extends TestBase {
         shops.forEach(shop -> citiesJson.add(shop.getName().split(", ")[1]));
     }
 
+    @Test(enabled=false)
+    public void isResponseContainsAllCities() {
+        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
+        Response response =
+                new RestAssuredConfiguration().getResponse(requestSpecification, EndPoint.GET_ALL_SHOPS, HttpStatus.SC_OK);
+
+        Assert.assertEquals(response.statusCode(),200);
+    }
+
+    @Test(dataProvider = "shopCities")
+    public void isNameFieldGetCityResponseContainsAll(TreeSet<String> cities){
+        List<String> names=new ArrayList<>();
+        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
+       // given().get(EndPoint.GET_ALL_SHOPS).then().body("data.name",hasItems(cities));
+
+        names=given().get(EndPoint.GET_ALL_SHOPS).body().path("data.name");
+        names.forEach(name->{ Assert.assertTrue(cities.contains(name.split(", ")[1]),name.split(", ")[1]);
+        });
+
+        given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS).
+                then().statusCode(200).log().all();
+
+        Response response = given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS);
+        response.then().body("total", equalTo("7059")).body("limit", equalTo("7059"));
+        Assert.assertEquals(response.path("limit"), "7059");
+    }
 
 }
 
