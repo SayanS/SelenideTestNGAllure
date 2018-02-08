@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 
 @Features("Shop header menu")
 @Stories("Checking features related to Shop item of the Header menu")
@@ -75,13 +75,13 @@ public class ShopTest extends TestBase {
         return indexes;
     }
 
-    @Test(dataProvider = "shopCities",enabled = false)
+    @Test(dataProvider = "shopCities", enabled = false)
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
         shopsPage.isShownAllCities(shopCities);
     }
 
-    @Test(dataProvider = "cityIndexesBestWay",enabled = false)
+    @Test(dataProvider = "cityIndexesBestWay", enabled = false)
     public void checkAbilityToSelectDefaultCityBestWay(Integer index) {
         String selectedCityName;
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
@@ -137,31 +137,42 @@ public class ShopTest extends TestBase {
         shops.forEach(shop -> citiesJson.add(shop.getName().split(", ")[1]));
     }
 
-    @Test(enabled=false)
+    @Test(enabled = false)
     public void isResponseContainsAllCities() {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         Response response =
                 new RestAssuredConfiguration().getResponse(requestSpecification, EndPoint.GET_ALL_SHOPS, HttpStatus.SC_OK);
 
-        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertEquals(response.statusCode(), 200);
+    }
+
+    @Test(dataProvider = "shopCities",enabled = false)
+    public void isGetCityResponseContainsAllCitiesViaRestAssured(TreeSet<String> expectedCities) {
+        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
+        given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
+                then().statusCode(200).log().all();
+        List<String> actualCities=given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
+
+        given().get(EndPoint.GET_ALL_CITIES).then().body("data.title", hasItems(expectedCities.toArray()));
+
+        Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
     @Test(dataProvider = "shopCities")
-    public void isNameFieldGetCityResponseContainsAll(TreeSet<String> cities){
-        List<String> names=new ArrayList<>();
+    public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
-       // given().get(EndPoint.GET_ALL_SHOPS).then().body("data.name",hasItems(cities));
+        given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
+                then().statusCode(200).log().all();
+        List<String> actualCities=given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
+        Assert.assertTrue(actualCities.containsAll(expectedCities));
+    }
 
-        names=given().get(EndPoint.GET_ALL_SHOPS).body().path("data.name");
-        names.forEach(name->{ Assert.assertTrue(cities.contains(name.split(", ")[1]),name.split(", ")[1]);
-        });
-
+    @Test(enabled=false)
+    public void isGetShopsResponseContainsAllShops() {
+        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS).
                 then().statusCode(200).log().all();
-
         Response response = given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS);
-        response.then().body("total", equalTo("7059")).body("limit", equalTo("7059"));
-        Assert.assertEquals(response.path("limit"), "7059");
     }
 
 }
