@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.models.Shop;
+import com.test.pages.CatalogMenuPopUp;
 import com.test.pages.ShopsPage;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
@@ -77,14 +78,14 @@ public class ShopTest extends TestBase {
 
     @Test(dataProvider = "shopCities", enabled = false)
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
-        ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
+        ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         shopsPage.isShownAllCities(shopCities);
     }
 
     @Test(dataProvider = "cityIndexesBestWay", enabled = false)
     public void checkAbilityToSelectDefaultCityBestWay(Integer index) {
         String selectedCityName;
-        ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
+        ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         selectedCityName = shopsPage.selectCity(index - 1);
         shopsPage.headerSection.ensureThatCityShownInHeaderMenu(selectedCityName);
         shopsPage.ensureThatNotificationContains(selectedCityName);
@@ -95,7 +96,7 @@ public class ShopTest extends TestBase {
     public void checkAbilityToSelectDefaultCity() {
         String selectedCityName;
         Integer totalCities;
-        ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
+        ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         totalCities = shopsPage.getCitiesNumber();
         for (int i = 1; i <= totalCities; i++) {
             selectedCityName = shopsPage.selectCity(i - 1);
@@ -107,7 +108,7 @@ public class ShopTest extends TestBase {
     @Test(dataProvider = "cityIndexes", enabled = false)
     public void checkAbilityToSelectDefaultCityParallelExecution(List<Integer> cityIndexes) {
         Integer totalCities;
-        ShopsPage shopsPage = (ShopsPage) onHomePage().headerPage.selectMenuItem("Магазины");
+        ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         totalCities = shopsPage.getCitiesNumber();
         cityIndexes.forEach(index -> {
             String selectedCityName;
@@ -146,33 +147,43 @@ public class ShopTest extends TestBase {
         Assert.assertEquals(response.statusCode(), 200);
     }
 
-    @Test(dataProvider = "shopCities",enabled = false)
+    @Test(dataProvider = "shopCities", enabled = false)
     public void isGetCityResponseContainsAllCitiesViaRestAssured(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
                 then().statusCode(200).log().all();
-        List<String> actualCities=given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
+        List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
 
         given().get(EndPoint.GET_ALL_CITIES).then().body("data.title", hasItems(expectedCities.toArray()));
 
         Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
-    @Test(dataProvider = "shopCities")
+    @Test(dataProvider = "shopCities", enabled = false)
     public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
                 then().statusCode(200).log().all();
-        List<String> actualCities=given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
+        List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
         Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
-    @Test(enabled=false)
-    public void isGetShopsResponseContainsAllShops() {
-        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
-        given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS).
-                then().statusCode(200).log().all();
-        Response response = given().spec(requestSpecification).get(EndPoint.GET_ALL_SHOPS);
+    @DataProvider
+    public Object[][] catalogMenuItems() throws IOException {
+       Object[][] result=new Object[1][2];
+        Map<String,Map<String,List<String>>> catalogMenuItem=new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        catalogMenuItem = mapper.readValue(new File("./src/test/resources/data/CatalogMenu.json"),
+                new TypeReference<Map<String,Map<String,List<String>>>>() {});
+        return result;
+    }
+
+    @Test(dataProvider = "catalogMenuItems")
+    public void isAppropreateSubItemsShownForCatalogMenuItems(Object[][] o) {
+        CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
+        catalogMenuPopUp.ensureThatTitle("Каталог товаров");
+        //catalogMenuPopUp.ensureThatAllMenuItemsIsShown();
+
     }
 
 }
