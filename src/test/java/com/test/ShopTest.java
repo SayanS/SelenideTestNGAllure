@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.models.Shop;
 import com.test.pages.CatalogMenuPopUp;
+import com.test.pages.NodeItemPage;
 import com.test.pages.ShopsPage;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
@@ -170,20 +171,65 @@ public class ShopTest extends TestBase {
 
     @DataProvider
     public Object[][] catalogMenuItems() throws IOException {
-       Object[][] result=new Object[1][2];
-        Map<String,Map<String,List<String>>> catalogMenuItem=new HashMap<>();
+        Object[][] result = new Object[1][1];
+        Integer i = 0;
+        LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalogMenuItem = new LinkedHashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         catalogMenuItem = mapper.readValue(new File("./src/test/resources/data/CatalogMenu.json"),
-                new TypeReference<Map<String,Map<String,List<String>>>>() {});
+                new TypeReference<LinkedHashMap<String, LinkedHashMap<String, List<String>>>>() {
+                });
+        result[0][0] = catalogMenuItem;
         return result;
     }
 
-    @Test(dataProvider = "catalogMenuItems")
-    public void isAppropreateSubItemsShownForCatalogMenuItems(Object[][] o) {
+    @Test(dataProvider = "catalogMenuItems", enabled = false)
+    public void isAppropreateSubItemsShownForCatalogMenuItems(LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalog) {
+        Integer menuItemIndex = 1;
         CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
         catalogMenuPopUp.ensureThatTitle("Каталог товаров");
-        //catalogMenuPopUp.ensureThatAllMenuItemsIsShown();
+        catalogMenuPopUp.ensureThatAllMenuItemsIsShown(catalog);
+        for (Map.Entry<String, LinkedHashMap<String, List<String>>> entry : catalog.entrySet()) {
+            String item = entry.getKey();
+            LinkedHashMap<String, List<String>> subItems = entry.getValue();
+            if (menuItemIndex == 1) {
+                menuItemIndex++;
+            } else {
+                catalogMenuPopUp.clickOnMenuItem(item);
+            }
+            catalogMenuPopUp.ensureThatHeadingsOfSubItemsShown(new LinkedList<>(subItems.keySet()));
+        }
+    }
 
+    @DataProvider(parallel = true)
+    public Object[][] catalogMenuItemsForParallel() throws IOException {
+        Object[][] result;
+        Integer i = 0;
+        LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalogMenuItem = new LinkedHashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        catalogMenuItem = mapper.readValue(new File("./src/test/resources/data/CatalogMenu.json"),
+                new TypeReference<LinkedHashMap<String, LinkedHashMap<String, List<String>>>>() {
+                });
+        result = new Object[catalogMenuItem.keySet().size()][2];
+        for (Map.Entry<String, LinkedHashMap<String, List<String>>> entry : catalogMenuItem.entrySet()) {
+            result[i][0] = entry.getKey();
+            result[i][1] = entry.getValue();
+            i++;
+        }
+        return result;
+    }
+
+    @Test(dataProvider = "catalogMenuItemsForParallel")
+    public void isCatalogMenuItemsOpenedRelatedNodeItemPage(String item, LinkedHashMap<String, List<String>> catalog) {
+        CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
+        catalogMenuPopUp.ensureThatTitle("Каталог товаров");
+        if (catalogMenuPopUp.isActiveMenuItem(item) == false) {
+            catalogMenuPopUp.clickOnMenuItem(item);
+            NodeItemPage nodeItempage = new NodeItemPage();
+            nodeItempage.ensureThatPageTitleIs(item).ensureThatItemsTitlesShown(new LinkedList<>(catalog.keySet()));
+        } else {
+            NodeItemPage nodeItempage = catalogMenuPopUp.doubleClickOnMenuItem(item)
+                    .ensureThatPageTitleIs(item).ensureThatItemsTitlesShown(new LinkedList<>(catalog.keySet()));
+        }
     }
 
 }
