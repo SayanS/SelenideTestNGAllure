@@ -38,4 +38,5 @@ public class CustomTestListener extends TestListenerAdapter {
         private byte[] makeScreenshot() {
             return ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
         }
+
 }
