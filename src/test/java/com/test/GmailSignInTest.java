@@ -10,7 +10,7 @@ import ru.yandex.qatools.allure.annotations.Stories;
 @Test
 @Features("SignIn")
 @Stories("Checking ability to sign in")
-public class SignInTest extends TestBase {
+public class GmailSignInTest extends TestBase {
 
     @DataProvider(name = "userProvider", parallel = true)
     public Object[][] getNames() {

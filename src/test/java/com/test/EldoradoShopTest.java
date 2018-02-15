@@ -1,8 +1,10 @@
 package com.test;
 
+import com.codeborne.selenide.Selenide;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.models.Product;
 import com.test.models.Shop;
 import com.test.pages.CatalogMenuPopUp;
 import com.test.pages.NodeItemPage;
@@ -28,7 +30,7 @@ import static org.hamcrest.Matchers.hasItems;
 
 @Features("Shop header menu")
 @Stories("Checking features related to Shop item of the Header menu")
-public class ShopTest extends TestBase {
+public class EldoradoShopTest extends TestBase {
 
     @DataProvider
     public Object[][] shopCities() {
@@ -218,7 +220,7 @@ public class ShopTest extends TestBase {
         return result;
     }
 
-    @Test(dataProvider = "catalogMenuItemsForParallel")
+    @Test(dataProvider = "catalogMenuItemsForParallel", enabled = false)
     public void isCatalogMenuItemsOpenedRelatedNodeItemPage(String item, LinkedHashMap<String, List<String>> catalog) {
         CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
         catalogMenuPopUp.ensureThatTitle("Каталог товаров");
@@ -231,6 +233,29 @@ public class ShopTest extends TestBase {
                     .ensureThatPageTitleIs(item).ensureThatItemsTitlesShown(new LinkedList<>(catalog.keySet()));
         }
     }
+
+    @DataProvider
+    public Object[][] productsForAddingToCart() {
+        return new Object[][]{{Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "92299", null, null, 1))},
+                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4699", "5599", null, 1),
+                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6999", "8499", null, 1))}};
+    }
+
+    @Test(dataProvider = "productsForAddingToCart")
+    public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
+        products.forEach(product -> {
+            try {
+                onHomePage()
+                        .headerSection.searchForProductByID(product.getId())
+                        .clickOnBuyProductButton()
+                        .headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Selenide.clearBrowserCookies();
+    }
+
 
 }
 

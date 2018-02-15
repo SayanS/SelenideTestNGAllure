@@ -9,14 +9,14 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class SearchResultsPage extends BasePage {
+public class GoogleSearchResultsPage extends BasePage {
     @Step
-    public SearchResultsPage ensureResultsContains(String text ) {
+    public GoogleSearchResultsPage ensureResultsContains(String text ) {
         $(By.partialLinkText(text)).shouldBe(visible);
         return this;
     }
     @Step
-    public SearchResultsPage ensureResultsHaveSize(int size ) {
+    public GoogleSearchResultsPage ensureResultsHaveSize(int size ) {
         getResults().shouldHave(size(size));
         return this;
     }

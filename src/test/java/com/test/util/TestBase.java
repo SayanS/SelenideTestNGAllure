@@ -32,6 +32,7 @@ public class TestBase {
 //            baseUrl="https://www.google.com/";
             baseUrl="https://eldorado.ua/";
         }
+        onHomePage().headerSection.acceptGeolocationCity();
     }
 
     public GooglePage onGooglePage() {

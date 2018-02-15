@@ -4,7 +4,7 @@
     <test name="Test1">
         <classes>
             <class name="com.test.util.RestAssuredConfiguration"/>
-            <class name="com.test.ShopTest"/>
+            <class name="com.test.EldoradoShopTest"/>
         </classes>
     </test>
 </suite>

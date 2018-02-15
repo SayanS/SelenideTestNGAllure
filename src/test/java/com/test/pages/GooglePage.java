@@ -13,9 +13,9 @@ public class GooglePage extends BasePage{
     private By accountButton=By.xpath(".//a[contains(@title,'Google Account:')]");
 
     @Step
-    public SearchResultsPage searchFor(String text) {
+    public GoogleSearchResultsPage searchFor(String text) {
         $("#lst-ib").val(text).pressEnter();
-        return page(SearchResultsPage.class);
+        return page(GoogleSearchResultsPage.class);
     }
     @Step
     public SignInPage clickOnSignInButton() {
