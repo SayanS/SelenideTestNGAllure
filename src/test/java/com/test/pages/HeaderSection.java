@@ -11,22 +11,23 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class HeaderSection {
-    private By menuItems = By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li/a");
-    private By selectCity = By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li[contains(@class,'city-select')]");
-    private By openCatalogMenuButton = By.xpath(".//div[@class='header-content desktop-header']//li[@class='menu-button']");
-    private String globalSearchField = ".header-content.desktop-header #search-field input";
-    private String acceptGeolocationButton = ".desktop-header .button.submit";
-    private String cartItemNumberIcon=".desktop-header .cart-item-number.active";
+    private By MENU_ITEMS = By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li/a");
+    private By SELECT_CITY = By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li[contains(@class,'city-select')]");
+    private By OPEN_CATALOG_MENU_BUTTON = By.xpath(".//div[@class='header-content desktop-header']//li[@class='menu-button']");
+    private String GLOBAL_SEARCH_FIELD = ".header-content.desktop-header #search-field input";
+    private String ACCEPT_GEOLOCATION_BUTTON = ".desktop-header .button.submit";
+    private String CART_ITEM_NNUMBER_ICON =".desktop-header .cart-item-number.active";
+    private String CART_ICON=".desktop-header .icon-cart";
 
     @Step
     public HomePage acceptGeolocationCity() {
-        $(acceptGeolocationButton).click();
+        $(ACCEPT_GEOLOCATION_BUTTON).click();
         return page(HomePage.class);
     }
 
     @Step
     public BasePage selectMenuItem(String itemName) {
-        $$(menuItems).findBy(text(itemName)).click();
+        $$(MENU_ITEMS).findBy(text(itemName)).click();
         switch (itemName) {
             case "Магазины":
                 return page(ShopsPage.class);
@@ -37,36 +38,41 @@ public class HeaderSection {
 
     @Step
     public void ensureThatCityShownInHeaderMenu(String expectedCity) {
-        $(selectCity).waitUntil(text(expectedCity), 5000);
-        $(selectCity).shouldBe(exactText(expectedCity));
+        $(SELECT_CITY).waitUntil(text(expectedCity), 5000);
+        $(SELECT_CITY).shouldBe(exactText(expectedCity));
     }
 
     @Step
     public CatalogMenuPopUp openCatalogMenu() {
-        $(openCatalogMenuButton).click();
+        $(OPEN_CATALOG_MENU_BUTTON).click();
         return page(CatalogMenuPopUp.class);
     }
 
     @Step
     public ProductPage searchForProductByID(String productID) {
-        $(globalSearchField).clear();
-        $(globalSearchField).val(productID);
+        $(GLOBAL_SEARCH_FIELD).clear();
+        $(GLOBAL_SEARCH_FIELD).val(productID);
         (new WebDriverWait(getWebDriver(),10))
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".image-place>img")));
-        $(globalSearchField).pressEnter();
+        $(GLOBAL_SEARCH_FIELD).pressEnter();
         return page(ProductPage.class);
     }
 
     @Step
     public void ensureThatCartItemNumberEqualTo(String number) throws InterruptedException {
         for(int i=1; i<=10;i++){
-            if($(cartItemNumberIcon).getText().equals("0")){
+            if($(CART_ITEM_NNUMBER_ICON).getText().equals("0")){
                 Thread.sleep(500);
             }else{
                 break;
             }
         }
-        $(cartItemNumberIcon).shouldBe(text(number));
+        $(CART_ITEM_NNUMBER_ICON).shouldBe(text(number));
     }
 
+    @Step
+    public CheckoutPage clickCartIcon() {
+        $(CART_ICON).click();
+        return page(CheckoutPage.class);
+    }
 }

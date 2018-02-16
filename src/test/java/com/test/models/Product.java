@@ -41,7 +41,7 @@ public class Product {
     }
 
     public void setPrice(String price) {
-        this.price = price;
+        this.price = price.replace(".-","");
     }
 
     public String getPriceDiscount() {
@@ -67,4 +67,5 @@ public class Product {
     public void setQty(Integer qty) {
         this.qty = qty;
     }
+
 }

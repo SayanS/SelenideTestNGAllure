@@ -1,6 +1,5 @@
 package com.test.pages;
 
-import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -10,8 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class ShopsPage extends BasePage {
@@ -43,10 +40,6 @@ public class ShopsPage extends BasePage {
         return $$(cityItems).size();
     }
 
-    @Step
-    public void ensureThatNotificationContains(String expectedText){
-        String notificationXpath=".//div[@class='notification notification-info notification-visible']//div";
-        $(By.xpath(notificationXpath)).waitUntil(Condition.text(expectedText),20000).shouldHave(text(expectedText));
-    }
+
 
 }

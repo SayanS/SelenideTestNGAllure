@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.models.Product;
 import com.test.models.Shop;
-import com.test.pages.CatalogMenuPopUp;
-import com.test.pages.NodeItemPage;
-import com.test.pages.ShopsPage;
+import com.test.pages.*;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
 import com.test.util.TestBase;
@@ -237,21 +235,23 @@ public class EldoradoShopTest extends TestBase {
     @DataProvider
     public Object[][] productsForAddingToCart() {
         return new Object[][]{{Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "92299", null, null, 1))},
-                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4699", "5599", null, 1),
-                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6999", "8499", null, 1))}};
+                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4699", null, null, 1),
+                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6999", null, null, 1))}};
     }
 
     @Test(dataProvider = "productsForAddingToCart")
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
+        HomePage homepage = onHomePage();
+        products.forEach(product -> homepage
+                .headerSection.searchForProductByID(product.getId())
+                .clickOnBuyProductButton()
+                .ensureThatNotificationContains(product.getModelName()));
+
+        homepage.headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
+
         products.forEach(product -> {
-            try {
-                onHomePage()
-                        .headerSection.searchForProductByID(product.getId())
-                        .clickOnBuyProductButton()
-                        .headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            product.setId(null);
+            homepage.headerSection.clickCartIcon().ensureThatCartContains(product);
         });
         Selenide.clearBrowserCookies();
     }
