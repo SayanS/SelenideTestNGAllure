@@ -242,17 +242,13 @@ public class EldoradoShopTest extends TestBase {
     @Test(dataProvider = "productsForAddingToCart")
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage();
-        products.forEach(product -> homepage
-                .headerSection.searchForProductByID(product.getId())
-                .clickOnBuyProductButton()
-                .ensureThatNotificationContains(product.getModelName()));
-
+        products.forEach(product ->
+            homepage.headerSection.searchForProductByID(product.getId())
+                    .clickOnBuyProductButton()
+                    .ensureThatNotificationContains(product.getModelName())
+        );
         homepage.headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
-
-        products.forEach(product -> {
-            product.setId(null);
-            homepage.headerSection.clickCartIcon().ensureThatCartContains(product);
-        });
+        homepage.headerSection.clickCartIcon().ensureThatCartContains(products);
         Selenide.clearBrowserCookies();
     }
 

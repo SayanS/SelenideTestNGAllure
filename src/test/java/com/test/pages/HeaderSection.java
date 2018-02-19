@@ -1,14 +1,11 @@
 package com.test.pages;
 
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class HeaderSection {
     private By MENU_ITEMS = By.xpath(".//div[@class='header-content desktop-header']//ul[@class='header-navigation']/li/a");
@@ -17,7 +14,7 @@ public class HeaderSection {
     private String GLOBAL_SEARCH_FIELD = ".header-content.desktop-header #search-field input";
     private String ACCEPT_GEOLOCATION_BUTTON = ".desktop-header .button.submit";
     private String CART_ITEM_NNUMBER_ICON =".desktop-header .cart-item-number.active";
-    private String CART_ICON=".desktop-header .icon-cart";
+    private String CART_ICON="a[href='/checkout/'].options-list__item";
 
     @Step
     public HomePage acceptGeolocationCity() {
@@ -52,26 +49,35 @@ public class HeaderSection {
     public ProductPage searchForProductByID(String productID) {
         $(GLOBAL_SEARCH_FIELD).clear();
         $(GLOBAL_SEARCH_FIELD).val(productID);
-        (new WebDriverWait(getWebDriver(),10))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".image-place>img")));
+        $(".image-place>img.loading").shouldBe(appear);
+        $(".image-place>img.loading").shouldBe(disappear);
         $(GLOBAL_SEARCH_FIELD).pressEnter();
         return page(ProductPage.class);
     }
 
     @Step
-    public void ensureThatCartItemNumberEqualTo(String number) throws InterruptedException {
-        for(int i=1; i<=10;i++){
+    public void waitForCartItemNumber(Integer delay) throws InterruptedException {
+        for(int i=1; i<=delay;i++){
             if($(CART_ITEM_NNUMBER_ICON).getText().equals("0")){
                 Thread.sleep(500);
             }else{
                 break;
             }
         }
+    }
+
+    @Step
+    public void ensureThatCartItemNumberEqualTo(String number) throws InterruptedException {
+//        $(".notification.notification-visible div").shouldBe(Condition.appear);
+//        $(".notification.notification-visible div").shouldBe(Condition.disappear);
         $(CART_ITEM_NNUMBER_ICON).shouldBe(text(number));
     }
 
     @Step
-    public CheckoutPage clickCartIcon() {
+    public CheckoutPage clickCartIcon() throws InterruptedException {
+   //     (new WebDriverWait(getWebDriver(),5)).until(ExpectedConditions.elementToBeClickable(By.cssSelector(CART_ICON)));
+        $(".notification.notification-visible div").shouldBe(Condition.appear);
+        $(".notification.notification-visible div").shouldBe(Condition.disappear);
         $(CART_ICON).click();
         return page(CheckoutPage.class);
     }

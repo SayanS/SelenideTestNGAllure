@@ -16,6 +16,7 @@ import java.util.Properties;
 public class CustomWebDriver implements WebDriverProvider {
     @Override
     public WebDriver createDriver(DesiredCapabilities capabilities) {
+        WebDriver webDriver;
         String browser;
         Properties prop = new Properties();
         InputStream input = null;

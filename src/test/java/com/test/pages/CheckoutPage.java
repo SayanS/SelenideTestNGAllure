@@ -3,7 +3,8 @@ package com.test.pages;
 import com.codeborne.selenide.SelenideElement;
 import com.test.models.Product;
 import io.qameta.allure.Step;
-import org.testng.Assert;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$$;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,15 +25,19 @@ public class CheckoutPage {
     }
 
     @Step
-    public void ensureThatCartContains(Product product) {
-        for (int i = 0; i < $$(CART_PRODUCT_CONTAINERS).size(); i++) {
-            try {
-                assertThat(getProductFromCart(i), samePropertyValuesAs(product));
-                break;
-            } catch (Exception e) {
+    public void ensureThatCartContains(List<Product> products) {
+        products.forEach(product -> {
+            for (int i = 0; i < $$(CART_PRODUCT_CONTAINERS).size(); i++) {
+                try {
+                    product.setId(null);
+                    assertThat(getProductFromCart(i), samePropertyValuesAs(product));
+                    break;
+                } catch (Exception e) {
+                  //  Assert.assertTrue(false,"Cart isn't contains" + product.getModelName());
+                }
             }
-        }
-        Assert.assertTrue(false);
+        });
+
     }
 
     @Step

@@ -1,8 +1,8 @@
 package com.test.pages;
 
-import com.codeborne.selenide.Condition;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
@@ -12,13 +12,13 @@ public class ProductPage extends BasePage {
 
     @Step
     public ProductPage clickOnBuyProductButton(){
-        $(buyProductButton).waitUntil(Condition.visible,20000).click();
+        $(buyProductButton).should(visible).click();
         return page(ProductPage.class);
     }
 
     @Step
     public CheckoutPage clickOnToCartButton(){
-        $(toCartButton).waitUntil(Condition.visible,10000).click();
+        $(toCartButton).waitUntil(visible,10000).click();
         return page(CheckoutPage.class);
     }
 }
