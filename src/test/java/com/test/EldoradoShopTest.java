@@ -1,6 +1,5 @@
 package com.test;
 
-import com.codeborne.selenide.Selenide;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -235,21 +234,22 @@ public class EldoradoShopTest extends TestBase {
     @DataProvider
     public Object[][] productsForAddingToCart() {
         return new Object[][]{{Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "92299", null, null, 1))},
-                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4699", null, null, 1),
-                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6999", null, null, 1))}};
+                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4799", null, null, 1),
+                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6888", null, null, 1))}};
     }
 
     @Test(dataProvider = "productsForAddingToCart")
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage();
         products.forEach(product ->
-            homepage.headerSection.searchForProductByID(product.getId())
-                    .clickOnBuyProductButton()
-                    .ensureThatNotificationContains(product.getModelName())
+                homepage.headerSection.searchForProductByID(product.getId())
+                        .clickOnBuyProductButton()
+                        .ensureThatNotificationContains(product.getModelName())
         );
         homepage.headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
-        homepage.headerSection.clickCartIcon().ensureThatCartContains(products);
-        Selenide.clearBrowserCookies();
+        CheckoutPage checkoutPage = homepage.headerSection.clickCartIcon();
+        checkoutPage.ensureThatCartContains(products).clearCart();
+        int i=0;
     }
 
 

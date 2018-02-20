@@ -7,10 +7,14 @@ import io.qameta.allure.Step;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.page;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.hamcrest.core.AllOf.allOf;
 
-public class CheckoutPage {
+
+public class CheckoutPage extends BasePage {
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";
     private String CART_REMOVE_PRODUCT_BUTTON = ".icon.icon-cross";
 
@@ -25,26 +29,44 @@ public class CheckoutPage {
     }
 
     @Step
-    public void ensureThatCartContains(List<Product> products) {
-        products.forEach(product -> {
-            for (int i = 0; i < $$(CART_PRODUCT_CONTAINERS).size(); i++) {
-                try {
-                    product.setId(null);
-                    assertThat(getProductFromCart(i), samePropertyValuesAs(product));
-                    break;
-                } catch (Exception e) {
-                  //  Assert.assertTrue(false,"Cart isn't contains" + product.getModelName());
-                }
-            }
-        });
+    public CheckoutPage ensureThatCartContains(List<Product> products) {
+        assertThat(products, contains(samePropertyValuesAs(getProductFromCart(0))));
 
+        assertThat(products, contains(allOf(hasProperty("id", is(getProductFromCart(0).getId())),
+                                            hasProperty("modelName", is(getProductFromCart(0).getModelName())),
+                                            hasProperty("discountPrice", is(getProductFromCart(0).getPriceDiscount())),
+                                            hasProperty("promotionPrice", is(getProductFromCart(0).getPromotionPrice())),
+                                            hasProperty("price", is(getProductFromCart(0).getPrice())),
+                                            hasProperty("qty", is(getProductFromCart(0).getQty())))));
+int i=0;
+//        products.forEach(product -> {
+//            Product[] p = new Product[]{getProductFromCart(1)};
+//            for (int i = 0; i < $$(CART_PRODUCT_CONTAINERS).size(); i++) {
+//                try {
+////                    assertThat(getProductFromCart(i), samePropertyValuesAs(product));
+//                    product.setId(null);
+//                    try {
+//                        assertThat(getProductFromCart(i), samePropertyValuesAs(product));
+//                        break;
+//                    } catch (Exception e) {
+//                        System.out.println("Not Equal - next product");
+//                    }
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
+        return page(CheckoutPage.class);
     }
 
     @Step
-    public void clearCart() {
-        Integer countProducts = $$(CART_PRODUCT_CONTAINERS).size();
-        for (int i = 1; i <= countProducts; i++) {
+    public BasePage clearCart() {
+        if ($$(CART_REMOVE_PRODUCT_BUTTON).size() > 1) {
             $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+            clearCart();
+            return page(CheckoutPage.class);
+        } else {
+            $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+            return page(HomePage.class);
         }
     }
 }

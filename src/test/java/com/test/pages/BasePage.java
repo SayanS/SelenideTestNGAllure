@@ -18,7 +18,7 @@ public class BasePage {
     @Step
     public void ensureThatNotificationContains(String expectedText){
         $(notification).waitUntil(Condition.text(expectedText),20000).shouldHave(text(expectedText));
-        $(notification).should(disappear);
+        $(notification).waitUntil(disappear,10000);
     }
 
 }

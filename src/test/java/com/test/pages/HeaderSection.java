@@ -48,6 +48,7 @@ public class HeaderSection {
     @Step
     public ProductPage searchForProductByID(String productID) {
         $(GLOBAL_SEARCH_FIELD).clear();
+        $(GLOBAL_SEARCH_FIELD).shouldBe(text("")).click();
         $(GLOBAL_SEARCH_FIELD).val(productID);
         $(".image-place>img.loading").shouldBe(appear);
         $(".image-place>img.loading").shouldBe(disappear);
@@ -56,28 +57,13 @@ public class HeaderSection {
     }
 
     @Step
-    public void waitForCartItemNumber(Integer delay) throws InterruptedException {
-        for(int i=1; i<=delay;i++){
-            if($(CART_ITEM_NNUMBER_ICON).getText().equals("0")){
-                Thread.sleep(500);
-            }else{
-                break;
-            }
-        }
-    }
-
-    @Step
     public void ensureThatCartItemNumberEqualTo(String number) throws InterruptedException {
-//        $(".notification.notification-visible div").shouldBe(Condition.appear);
-//        $(".notification.notification-visible div").shouldBe(Condition.disappear);
+        $(CART_ITEM_NNUMBER_ICON).shouldBe(Condition.visible);
         $(CART_ITEM_NNUMBER_ICON).shouldBe(text(number));
     }
 
     @Step
     public CheckoutPage clickCartIcon() throws InterruptedException {
-   //     (new WebDriverWait(getWebDriver(),5)).until(ExpectedConditions.elementToBeClickable(By.cssSelector(CART_ICON)));
-        $(".notification.notification-visible div").shouldBe(Condition.appear);
-        $(".notification.notification-visible div").shouldBe(Condition.disappear);
         $(CART_ICON).click();
         return page(CheckoutPage.class);
     }

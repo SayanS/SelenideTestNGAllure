@@ -16,6 +16,7 @@ public class TestBase {
 
     @BeforeTest
     public void setUp() {
+//        In case webdriver initialize by Selenide
 //       System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdriver/geckodriver");
 //       Configuration.dismissModalDialogs = true;
 //       Configuration.browser = "marionette";
