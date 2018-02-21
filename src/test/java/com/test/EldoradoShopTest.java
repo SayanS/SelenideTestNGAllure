@@ -233,12 +233,12 @@ public class EldoradoShopTest extends TestBase {
 
     @DataProvider
     public Object[][] productsForAddingToCart() {
-        return new Object[][]{{Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "92299", null, null, 1))},
-                {Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4799", null, null, 1),
-                        new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6888", null, null, 1))}};
+        return new Object[][]{{Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4799", null, null, 1),
+                new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6888", null, null, 1))},
+                {Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "78999", null, null, 1))}};
     }
 
-    @Test(dataProvider = "productsForAddingToCart")
+    @Test(dataProvider = "productsForAddingToCart", groups = {"Checkout"})
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage();
         products.forEach(product ->
@@ -248,8 +248,7 @@ public class EldoradoShopTest extends TestBase {
         );
         homepage.headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
         CheckoutPage checkoutPage = homepage.headerSection.clickCartIcon();
-        checkoutPage.ensureThatCartContains(products).clearCart();
-        int i=0;
+        checkoutPage.ensureThatCartContains(products);
     }
 
 

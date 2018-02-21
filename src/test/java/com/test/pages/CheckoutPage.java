@@ -3,20 +3,21 @@ package com.test.pages;
 import com.codeborne.selenide.SelenideElement;
 import com.test.models.Product;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.page;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
-import static org.hamcrest.core.AllOf.allOf;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
+
+//import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
 
 public class CheckoutPage extends BasePage {
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";
     private String CART_REMOVE_PRODUCT_BUTTON = ".icon.icon-cross";
+    private String CART_PRODUCT_CONTAINER_BY_NAME=".//div[@class='cart']//div[.='$ProductName' and @class='checkout-product-image']/ancestor::div[1]";
 
     @Step
     public Product getProductFromCart(Integer index) {
@@ -30,31 +31,11 @@ public class CheckoutPage extends BasePage {
 
     @Step
     public CheckoutPage ensureThatCartContains(List<Product> products) {
-        assertThat(products, contains(samePropertyValuesAs(getProductFromCart(0))));
-
-        assertThat(products, contains(allOf(hasProperty("id", is(getProductFromCart(0).getId())),
-                                            hasProperty("modelName", is(getProductFromCart(0).getModelName())),
-                                            hasProperty("discountPrice", is(getProductFromCart(0).getPriceDiscount())),
-                                            hasProperty("promotionPrice", is(getProductFromCart(0).getPromotionPrice())),
-                                            hasProperty("price", is(getProductFromCart(0).getPrice())),
-                                            hasProperty("qty", is(getProductFromCart(0).getQty())))));
-int i=0;
-//        products.forEach(product -> {
-//            Product[] p = new Product[]{getProductFromCart(1)};
-//            for (int i = 0; i < $$(CART_PRODUCT_CONTAINERS).size(); i++) {
-//                try {
-////                    assertThat(getProductFromCart(i), samePropertyValuesAs(product));
-//                    product.setId(null);
-//                    try {
-//                        assertThat(getProductFromCart(i), samePropertyValuesAs(product));
-//                        break;
-//                    } catch (Exception e) {
-//                        System.out.println("Not Equal - next product");
-//                    }
-//                } catch (Exception e) {
-//                }
-//            }
-//        });
+        products.forEach(product -> {
+            SelenideElement productContainer=$(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName",product.getModelName())));
+            productContainer.find(".price").shouldHave(exactText(product.getPrice().replace(".-","")));
+            productContainer.find(".count-value").shouldHave(text(product.getQty().toString()));
+        });
         return page(CheckoutPage.class);
     }
 

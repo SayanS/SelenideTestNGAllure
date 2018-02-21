@@ -3,6 +3,7 @@ package com.test.util;
 import com.test.pages.GooglePage;
 import com.test.pages.HomePage;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 
@@ -34,6 +35,12 @@ public class TestBase {
             baseUrl="https://eldorado.ua/";
         }
         onHomePage().headerSection.acceptGeolocationCity();
+    }
+
+
+    @AfterGroups(groups= "Checkout")
+    public void clearCart() throws InterruptedException {
+      onHomePage().headerSection.clickCartIcon().clearCart();
     }
 
     public GooglePage onGooglePage() {
