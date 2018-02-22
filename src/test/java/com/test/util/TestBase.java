@@ -3,9 +3,9 @@ package com.test.util;
 import com.test.pages.GooglePage;
 import com.test.pages.HomePage;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
@@ -28,28 +28,24 @@ public class TestBase {
 //       driver = new FirefoxDriver(opts);
 //       WebDriverRunner.setWebDriver(driver);
 
-        System.setProperty("browser","com.test.util.CustomWebDriver");
+        System.setProperty("browser", "com.test.util.CustomWebDriver");
         baseUrl = System.getProperty("base.url");
-        if(baseUrl==null){
+        if (baseUrl == null) {
 //            baseUrl="https://www.google.com/";
-            baseUrl="https://eldorado.ua/";
+            baseUrl = "https://eldorado.ua/";
         }
         onHomePage().headerSection.acceptGeolocationCity();
     }
 
-
-    @AfterGroups(groups= "Checkout")
-    public void clearCart() throws InterruptedException {
-      onHomePage().headerSection.clickCartIcon().clearCart();
-    }
-
+    @Step
     public GooglePage onGooglePage() {
         GooglePage page = open(baseUrl, GooglePage.class);
         return page;
     }
 
-    public HomePage onHomePage(){
-        HomePage page=open(baseUrl,HomePage.class);
+    @Step
+    public HomePage onHomePage() {
+        HomePage page = open(baseUrl, HomePage.class);
         return page;
     }
 

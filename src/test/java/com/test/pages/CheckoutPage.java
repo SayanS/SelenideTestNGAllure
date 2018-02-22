@@ -1,14 +1,20 @@
 package com.test.pages;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.test.models.Product;
-import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
 
 //import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
@@ -16,6 +22,9 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class CheckoutPage extends BasePage {
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";
+    private String PRODUCT_NAME=".product-title.sp";
+    private String PRICE=".price";
+    private String QTY=".count-value";
     private String CART_REMOVE_PRODUCT_BUTTON = ".icon.icon-cross";
     private String CART_PRODUCT_CONTAINER_BY_NAME=".//div[@class='cart']//div[.='$ProductName' and @class='checkout-product-image']/ancestor::div[1]";
 
@@ -33,21 +42,28 @@ public class CheckoutPage extends BasePage {
     public CheckoutPage ensureThatCartContains(List<Product> products) {
         products.forEach(product -> {
             SelenideElement productContainer=$(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName",product.getModelName())));
-            productContainer.find(".price").shouldHave(exactText(product.getPrice().replace(".-","")));
-            productContainer.find(".count-value").shouldHave(text(product.getQty().toString()));
+            productContainer.find(PRICE).shouldHave(exactText(product.getPrice()));
+            productContainer.find(QTY).shouldHave(text(product.getQty().toString()));
         });
         return page(CheckoutPage.class);
     }
 
     @Step
-    public BasePage clearCart() {
+    public HomePage clearCart() {
+        String productName;
+        $(By.xpath(".//*[@id='content']/div/div[1]/div[1]")).waitUntil(Condition.not(visible),10000);
         if ($$(CART_REMOVE_PRODUCT_BUTTON).size() > 1) {
+            productName=$$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
             $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+            ensureThatNotificationContains(productName);
             clearCart();
-            return page(CheckoutPage.class);
         } else {
+            productName=$$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
             $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
-            return page(HomePage.class);
+            $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+            ensureThatNotificationContains(productName);
+            Selenide.Wait().withTimeout(10, TimeUnit.SECONDS).until(ExpectedConditions.urlToBe(baseUrl));
         }
+        return page(HomePage.class);
     }
 }

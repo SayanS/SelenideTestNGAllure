@@ -13,8 +13,8 @@ public class HeaderSection {
     private By OPEN_CATALOG_MENU_BUTTON = By.xpath(".//div[@class='header-content desktop-header']//li[@class='menu-button']");
     private String GLOBAL_SEARCH_FIELD = ".header-content.desktop-header #search-field input";
     private String ACCEPT_GEOLOCATION_BUTTON = ".desktop-header .button.submit";
-    private String CART_ITEM_NNUMBER_ICON =".desktop-header .cart-item-number.active";
-    private String CART_ICON="a[href='/checkout/'].options-list__item";
+    private String CART_ITEM_NUMBER_ICON = ".desktop-header #cart-field .cart-item-number";
+    private String CART_ICON = "a[href='/checkout/'].options-list__item";
 
     @Step
     public HomePage acceptGeolocationCity() {
@@ -47,24 +47,32 @@ public class HeaderSection {
 
     @Step
     public ProductPage searchForProductByID(String productID) {
-        $(GLOBAL_SEARCH_FIELD).clear();
-        $(GLOBAL_SEARCH_FIELD).shouldBe(text("")).click();
-        $(GLOBAL_SEARCH_FIELD).val(productID);
-        $(".image-place>img.loading").shouldBe(appear);
-        $(".image-place>img.loading").shouldBe(disappear);
+        $(GLOBAL_SEARCH_FIELD).setValue("").pressEnter();
+        $(GLOBAL_SEARCH_FIELD)
+//                .waitUntil(Condition.attribute("value",""),5000)
+                .val(productID)
+                .waitUntil(Condition.attribute("value",productID),5000);
+        $(GLOBAL_SEARCH_FIELD).click();
+        $(".image-place>img.loading").waitUntil(appear,5000);
+        $(".image-place>img.loading").waitUntil(disappear,5000);
         $(GLOBAL_SEARCH_FIELD).pressEnter();
         return page(ProductPage.class);
     }
 
     @Step
     public void ensureThatCartItemNumberEqualTo(String number) throws InterruptedException {
-        $(CART_ITEM_NNUMBER_ICON).shouldBe(Condition.visible);
-        $(CART_ITEM_NNUMBER_ICON).shouldBe(text(number));
+        $(CART_ITEM_NUMBER_ICON).shouldBe(Condition.visible);
+        $(CART_ITEM_NUMBER_ICON).shouldBe(exactText(number));
     }
 
     @Step
     public CheckoutPage clickCartIcon() throws InterruptedException {
         $(CART_ICON).click();
         return page(CheckoutPage.class);
+    }
+
+    @Step
+    public String getCartItemCount() {
+        return $(CART_ITEM_NUMBER_ICON).getText();
     }
 }

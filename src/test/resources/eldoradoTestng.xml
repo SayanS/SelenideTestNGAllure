@@ -2,6 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="SmokeTests" verbose="2" parallel="tests" data-provider-thread-count="4">
     <test name="Test1">
+
         <classes>
             <class name="com.test.util.RestAssuredConfiguration"/>
             <class name="com.test.EldoradoShopTest"/>

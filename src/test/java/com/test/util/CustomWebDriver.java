@@ -31,7 +31,7 @@ public class CustomWebDriver implements WebDriverProvider {
         if(System.getProperty("run.browser")!=null){
             browser=System.getProperty("run.browser");
         }else{
-            browser="firefox";
+            browser="chrome";
         }
 
         switch (browser) {

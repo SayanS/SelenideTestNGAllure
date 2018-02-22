@@ -12,7 +12,7 @@ public class ProductPage extends BasePage {
 
     @Step
     public ProductPage clickOnBuyProductButton(){
-        $(buyProductButton).should(visible).click();
+        $(buyProductButton).waitUntil(visible,20000).click();
         return page(ProductPage.class);
     }
 
