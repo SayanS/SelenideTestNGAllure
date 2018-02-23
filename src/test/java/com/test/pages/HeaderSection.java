@@ -2,6 +2,7 @@ package com.test.pages;
 
 import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Condition.*;
@@ -47,14 +48,18 @@ public class HeaderSection {
 
     @Step
     public ProductPage searchForProductByID(String productID) {
-        $(GLOBAL_SEARCH_FIELD).setValue("").pressEnter();
+        if($(GLOBAL_SEARCH_FIELD).getAttribute("value").length()>0) {
+            while(!$(GLOBAL_SEARCH_FIELD).getAttribute("value").equals("")) {
+                $(GLOBAL_SEARCH_FIELD).val(Keys.BACK_SPACE.toString());
+            }
+        }
+        $(GLOBAL_SEARCH_FIELD).pressEnter();
         $(GLOBAL_SEARCH_FIELD)
-//                .waitUntil(Condition.attribute("value",""),5000)
                 .val(productID)
                 .waitUntil(Condition.attribute("value",productID),5000);
         $(GLOBAL_SEARCH_FIELD).click();
         $(".image-place>img.loading").waitUntil(appear,5000);
-        $(".image-place>img.loading").waitUntil(disappear,5000);
+        $(".image-place>img.loading").waitUntil(disappear,15000);
         $(GLOBAL_SEARCH_FIELD).pressEnter();
         return page(ProductPage.class);
     }

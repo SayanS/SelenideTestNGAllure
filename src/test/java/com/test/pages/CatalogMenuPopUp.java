@@ -17,43 +17,43 @@ import static com.codeborne.selenide.Selenide.page;
 
 public class CatalogMenuPopUp extends BasePage {
 
-    private By title = By.xpath(".//div[@class='catalog-menu-title']");
-    private By items = By.xpath(".//li[contains(@id,'mobile-menu-item-display')]/a");
-    private By subItemsHeading = By.xpath(".//div[@class='sub-menu-nav']//div[@class='heading']/a/span");
+    private By TITLE = By.xpath(".//div[@class='catalog-menu-title']");
+    private By ITEMS = By.xpath(".//li[contains(@id,'mobile-menu-item-display')]/a");
+    private By SUB_ITEMS_HEADING = By.xpath(".//div[@class='sub-menu-nav']//div[@class='heading']/a/span");
 
     @Step
     public void ensureThatTitle(String expectedTitle) {
-        $(title).shouldBe(Condition.text(expectedTitle));
+        $(TITLE).shouldBe(Condition.text(expectedTitle));
     }
 
     @Step
     public void ensureThatAllMenuItemsIsShown(LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalog) {
-        $$(items).shouldHave(CollectionCondition.exactTexts(new LinkedList<>(catalog.keySet())));
+        $$(ITEMS).shouldHave(CollectionCondition.exactTexts(new LinkedList<>(catalog.keySet())));
     }
 
     @Step
     public void ensureThatHeadingsOfSubItemsShown(LinkedList<String> expectedSubItems) {
-        Assert.assertEquals($$(subItemsHeading).texts().stream().map(String::toLowerCase).collect(Collectors.toList()),
+        Assert.assertEquals($$(SUB_ITEMS_HEADING).texts().stream().map(String::toLowerCase).collect(Collectors.toList()),
                 expectedSubItems.stream().map(String::toLowerCase).collect(Collectors.toList()));
 //      The same code Using Selenide
-        $$(subItemsHeading).shouldBe(CollectionCondition.texts(expectedSubItems));
+        $$(SUB_ITEMS_HEADING).shouldBe(CollectionCondition.texts(expectedSubItems));
     }
 
     @Step
     public void clickOnMenuItem(String item) {
-        $$(items).findBy(Condition.text(item)).click();
+        $$(ITEMS).findBy(Condition.text(item)).click();
     }
 
     @Step
     public NodeItemPage doubleClickOnMenuItem(String item) {
-        $$(items).findBy(Condition.text(item)).hover();
-        $$(items).findBy(Condition.text(item)).click();
-        $$(items).findBy(Condition.text(item)).click();
+        $$(ITEMS).findBy(Condition.text(item)).hover();
+        $$(ITEMS).findBy(Condition.text(item)).click();
+        $$(ITEMS).findBy(Condition.text(item)).click();
         return page(NodeItemPage.class);
     }
     @Step
     public boolean isActiveMenuItem(String item) {
-        if($$(items).findBy(Condition.text(item)).getAttribute("class").contains("-display-no ")){
+        if($$(ITEMS).findBy(Condition.text(item)).getAttribute("class").contains("-display-no ")){
             return false;
         }else {
             return true;

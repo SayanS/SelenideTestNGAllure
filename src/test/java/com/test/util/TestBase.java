@@ -28,7 +28,9 @@ public class TestBase {
 //       driver = new FirefoxDriver(opts);
 //       WebDriverRunner.setWebDriver(driver);
 
+//        In case custom webdriver
         System.setProperty("browser", "com.test.util.CustomWebDriver");
+
         baseUrl = System.getProperty("base.url");
         if (baseUrl == null) {
 //            baseUrl="https://www.google.com/";

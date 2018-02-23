@@ -10,7 +10,7 @@
     <allure.version>1.5.0.RC2</allure.version>
     <aspectj.version>1.8.3</aspectj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <run.browser>firefox</run.browser>
+    <run.browser>chrome</run.browser>
     <base.url>https://eldorado.ua/</base.url>
     <suiteXml>eldoradoTestng.xml</suiteXml>
   </properties>
@@ -95,12 +95,12 @@
             <!-- pass testng.xml files as argument from command line -->
             <suiteXmlFile>./src/test/resources/${suiteXml}</suiteXmlFile>
           </suiteXmlFiles>
+          <groups>Smoke</groups>
           <testFailureIgnore>true</testFailureIgnore>
           <argLine>
              -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
           </argLine>
         </configuration>
-
         <dependencies>
           <dependency>
             <groupId>org.aspectj</groupId>

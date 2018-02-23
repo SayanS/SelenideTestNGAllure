@@ -22,11 +22,11 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class CheckoutPage extends BasePage {
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";
-    private String PRODUCT_NAME=".product-title.sp";
-    private String PRICE=".price";
-    private String QTY=".count-value";
+    private String PRODUCT_NAME = ".product-title.sp";
+    private String PRICE = ".price";
+    private String QTY = ".count-value";
     private String CART_REMOVE_PRODUCT_BUTTON = ".icon.icon-cross";
-    private String CART_PRODUCT_CONTAINER_BY_NAME=".//div[@class='cart']//div[.='$ProductName' and @class='checkout-product-image']/ancestor::div[1]";
+    private String CART_PRODUCT_CONTAINER_BY_NAME = ".//div[@class='cart']//div[.='$ProductName' and @class='checkout-product-image']/ancestor::div[1]";
 
     @Step
     public Product getProductFromCart(Integer index) {
@@ -41,7 +41,7 @@ public class CheckoutPage extends BasePage {
     @Step
     public CheckoutPage ensureThatCartContains(List<Product> products) {
         products.forEach(product -> {
-            SelenideElement productContainer=$(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName",product.getModelName())));
+            SelenideElement productContainer = $(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName", product.getModelName())));
             productContainer.find(PRICE).shouldHave(exactText(product.getPrice()));
             productContainer.find(QTY).shouldHave(text(product.getQty().toString()));
         });
@@ -51,16 +51,19 @@ public class CheckoutPage extends BasePage {
     @Step
     public HomePage clearCart() {
         String productName;
-        $(By.xpath(".//*[@id='content']/div/div[1]/div[1]")).waitUntil(Condition.not(visible),10000);
+        $(By.xpath(".//*[@id='content']/div/div[1]/div[1]")).waitUntil(Condition.not(visible), 10000);
         if ($$(CART_REMOVE_PRODUCT_BUTTON).size() > 1) {
-            productName=$$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
+            productName = $$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
             $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
             ensureThatNotificationContains(productName);
             clearCart();
         } else {
-            productName=$$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
+            productName = $$(CART_PRODUCT_CONTAINERS).get(0).find(PRODUCT_NAME).getText();
             $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
-            $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+//            try {
+//                $$(CART_REMOVE_PRODUCT_BUTTON).get(0).click();
+//            } catch (Exception e) {
+//            }
             ensureThatNotificationContains(productName);
             Selenide.Wait().withTimeout(10, TimeUnit.SECONDS).until(ExpectedConditions.urlToBe(baseUrl));
         }

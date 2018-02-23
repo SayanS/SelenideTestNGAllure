@@ -159,7 +159,7 @@ public class EldoradoShopTest extends TestBase {
         Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
-    @Test(dataProvider = "shopCities", enabled = false)
+    @Test(dataProvider = "shopCities", enabled = false, groups={"Smoke"})
     public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
@@ -181,7 +181,7 @@ public class EldoradoShopTest extends TestBase {
         return result;
     }
 
-    @Test(dataProvider = "catalogMenuItems", enabled = false)
+    @Test(dataProvider = "catalogMenuItems", enabled = true, groups="Smoke")
     public void isAppropreateSubItemsShownForCatalogMenuItems(LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalog) {
         Integer menuItemIndex = 1;
         CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
@@ -238,7 +238,7 @@ public class EldoradoShopTest extends TestBase {
                 {Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "78999.-", null, null, 1))}};
     }
 
-    @Test(dataProvider = "productsForAddingToCart")
+    @Test(dataProvider = "productsForAddingToCart", enabled=true, groups={"Smoke"})
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage().clearCart();
         products.forEach(product ->

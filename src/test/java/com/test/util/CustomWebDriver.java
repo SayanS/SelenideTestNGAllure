@@ -20,7 +20,6 @@ public class CustomWebDriver implements WebDriverProvider {
         String browser;
         Properties prop = new Properties();
         InputStream input = null;
-
         try {
             input = new FileInputStream("./src/test/resources/config.properties");
             prop.load(input);
