@@ -10,9 +10,9 @@
     <allure.version>1.5.0.RC2</allure.version>
     <aspectj.version>1.8.3</aspectj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <run.browser>chrome</run.browser>
-    <base.url>https://eldorado.ua/</base.url>
-    <suiteXml>eldoradoTestng.xml</suiteXml>
+    <!--<run.browser>chrome</run.browser>-->
+    <!--<base.url>https://eldorado.ua/</base.url>-->
+    <suiteXml>mmm.xml</suiteXml>
   </properties>
 
   <dependencies>
@@ -21,6 +21,7 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>6.10</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -89,13 +90,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
+        <version>2.20.1</version>
         <configuration>
           <suiteXmlFiles>
             <!-- pass testng.xml files as argument from command line -->
             <suiteXmlFile>./src/test/resources/${suiteXml}</suiteXmlFile>
           </suiteXmlFiles>
-          <groups>Smoke</groups>
+          <parallel>tests</parallel>
+          <threadCount>2</threadCount>
           <testFailureIgnore>true</testFailureIgnore>
           <argLine>
              -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar

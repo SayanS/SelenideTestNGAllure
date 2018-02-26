@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="SmokeTests" verbose="2" thread-count="2" parallel="tests" data-provider-thread-count="4">
-    <test name="Test1">
-        <groups>
-            <run>
-                <include name="Smoke"/>
-            </run>
-        </groups>
+<suite name="EldoradoTests" verbose="2" thread-count="2" parallel="tests" data-provider-thread-count="4" >
+    <groups>
+        <run>
+            <include name="smoke"/>
+            <exclude name="nonexecutable"/>
+        </run>
+    </groups>
+
+    <test name="EldoradoFunctionalTests">
         <classes>
             <class name="com.test.EldoradoShopTest"/>
+        </classes>
+    </test>
+
+    <test name="GmailSignInTests">
+        <parameter name="url" value="https://www.google.com/" />
+        <classes>
+            <class name="com.test.GmailSignInTest"/>
         </classes>
     </test>
 </suite>

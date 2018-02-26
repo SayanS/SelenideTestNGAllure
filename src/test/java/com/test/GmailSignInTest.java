@@ -2,7 +2,9 @@ package com.test;
 
 import com.test.models.User;
 import com.test.util.TestBase;
+import org.testng.ITestContext;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
@@ -21,10 +23,11 @@ public class GmailSignInTest extends TestBase {
         result[3][0] = new User("lloydp2019@gmail.com", "Rfhfylfitkm12r");
         return result;
     }
-
-    @Test(dataProvider = "userProvider")
-    public void signIn(User user) throws InterruptedException {
-        onGooglePage().clickOnSignInButton().enterUserEmail(user.getEmail())
+    @Parameters({ "url" })
+    @Test(dataProvider = "userProvider", groups={"nonexecutable"})
+    public void signIn(User user, ITestContext context) throws InterruptedException {
+        onGooglePage(context.getCurrentXmlTest().getParameter("url"))
+                .clickOnSignInButton().enterUserEmail(user.getEmail())
                 .clickOnNextButtonAfterEmailEntered()
                 .enterUserPassword(user.getPassword())
                 .clickOnNextButtonAfterPasswordEntered()
