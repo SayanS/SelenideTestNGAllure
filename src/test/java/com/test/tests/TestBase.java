@@ -1,8 +1,9 @@
-package com.test.util;
+package com.test.tests;
 
 import com.codeborne.selenide.Configuration;
 import com.test.pages.GooglePage;
 import com.test.pages.HomePage;
+import com.test.util.CustomTestListener;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;

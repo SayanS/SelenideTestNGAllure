@@ -1,6 +1,5 @@
-package com.test;
+package com.test.tests;
 
-import com.test.util.TestBase;
 //import io.qameta.allure.Description;
 //import io.qameta.allure.Features;
 //import io.qameta.allure.Stories;

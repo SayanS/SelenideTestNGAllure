@@ -10,14 +10,14 @@
 
     <test name="EldoradoFunctionalTests">
         <classes>
-            <class name="com.test.EldoradoShopTest"/>
+            <class name="com.test.tests.EldoradoShopTest"/>
         </classes>
     </test>
 
     <test name="GmailSignInTests">
         <parameter name="url" value="https://www.google.com/" />
         <classes>
-            <class name="com.test.GmailSignInTest"/>
+            <class name="com.test.tests.GmailSignInTest"/>
         </classes>
     </test>
 </suite>

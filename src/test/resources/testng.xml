@@ -3,8 +3,8 @@
 <suite name="Tests" verbose="2" parallel="tests" thread-count="4" data-provider-thread-count="4">
 	<test name="Test1">
 		<classes>
-			<class name="com.test.GmailSignInTest"/>
-		    <class name="com.test.GoogleSearchTest"/>
+			<class name="com.test.tests.GmailSignInTest"/>
+		    <class name="com.test.tests.GoogleSearchTest"/>
 		</classes>
 	</test>  
 </suite>

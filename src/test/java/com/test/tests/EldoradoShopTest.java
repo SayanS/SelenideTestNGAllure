@@ -1,4 +1,4 @@
-package com.test;
+package com.test.tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -8,7 +8,6 @@ import com.test.models.Shop;
 import com.test.pages.*;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
-import com.test.util.TestBase;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;

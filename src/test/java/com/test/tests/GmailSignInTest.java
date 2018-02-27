@@ -1,7 +1,6 @@
-package com.test;
+package com.test.tests;
 
 import com.test.models.User;
-import com.test.util.TestBase;
 import org.testng.ITestContext;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -24,7 +23,7 @@ public class GmailSignInTest extends TestBase {
         return result;
     }
     @Parameters({ "url" })
-    @Test(dataProvider = "userProvider", groups={"nonexecutable"})
+    @Test(dataProvider = "userProvider", groups={"smoke"})
     public void signIn(User user, ITestContext context) throws InterruptedException {
         onGooglePage(context.getCurrentXmlTest().getParameter("url"))
                 .clickOnSignInButton().enterUserEmail(user.getEmail())
