@@ -12,8 +12,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
-
-@Test(groups = { "smoke" })
+@Test(groups = {"new","all"})
 @Listeners({CustomTestListener.class})
 public class TestBase {
     WebDriver driver;
@@ -30,7 +29,7 @@ public class TestBase {
         System.setProperty("webdriver.chrome.driver", "./src/test/resources/webdrivers/chromedriver");
 //        System.setProperty("Selenide.browser", "chrome");
         Configuration.browser="chrome";
-//        Configuration.baseUrl= "https://eldorado.ua/";
+        Configuration.baseUrl= "https://eldorado.ua/";
 
 //       Custom webdriver 1-st approach (the second one - using CustomWebDriver.class)
 //       FirefoxOptions opts = new FirefoxOptions();
