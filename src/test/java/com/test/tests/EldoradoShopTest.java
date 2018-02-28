@@ -168,8 +168,9 @@ public class EldoradoShopTest extends TestBase {
     @Test(enabled=true, groups = {"new"})
     public void checkoutProcess() throws InterruptedException {
         HomePage homePage=onHomePage().clearCart();
-        homePage.selectCategoryOfSlickSlackMenuSection(1, 9);
-
+        homePage.selectCategoryOfSlickSlackMenuSection(2, 2)
+                .addToCartProduct(2,3)
+                .ensureThatNotificationContains(homePage.getProductName(2,3));
     }
 
 
