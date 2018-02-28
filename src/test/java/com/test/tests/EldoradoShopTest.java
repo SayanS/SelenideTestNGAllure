@@ -7,6 +7,7 @@ import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
 import com.test.pages.*;
+import com.test.pages.homepage.HomePage;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
 import io.restassured.response.Response;
@@ -168,9 +169,9 @@ public class EldoradoShopTest extends TestBase {
     @Test(enabled=true, groups = {"new"})
     public void checkoutProcess() throws InterruptedException {
         HomePage homePage=onHomePage().clearCart();
-        homePage.selectCategoryOfSlickSlackMenuSection(2, 2)
-                .addToCartProduct(2,3)
-                .ensureThatNotificationContains(homePage.getProductName(2,3));
+        homePage.bestSuggestions.selectCategoryOfSlickSlackMenuSection(2)
+                .addToCartProduct(5)
+                .ensureThatNotificationContains(homePage.bestSuggestions.getProductName(5));
     }
 
 

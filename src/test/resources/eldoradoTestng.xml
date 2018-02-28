@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="EldoradoTests" verbose="2" thread-count="3" parallel="tests" data-provider-thread-count="4" >
-    <!--<groups>-->
-        <!--<run>-->
-            <!--<include name="new"/>-->
-            <!--<include name="all"/>-->
-            <!--<exclude name="smoke"/>-->
-            <!--<exclude name="nonexecutable"/>-->
-        <!--</run>-->
-    <!--</groups>-->
+    <groups>
+        <run>
+            <include name="new"/>
+            <include name="all"/>
+            <exclude name="smoke"/>
+            <exclude name="nonexecutable"/>
+        </run>
+    </groups>
 
     <test name="EldoradoFunctionalTests">
         <classes>
