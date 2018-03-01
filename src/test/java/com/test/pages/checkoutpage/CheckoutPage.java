@@ -1,9 +1,10 @@
-package com.test.pages;
+package com.test.pages.checkoutpage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.test.models.Product;
+import com.test.pages.BasePage;
 import com.test.pages.homepage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,12 +23,15 @@ import static com.codeborne.selenide.Selenide.*;
 
 
 public class CheckoutPage extends BasePage {
+    private String ORDER_PROCESSING_FORM=".order-processing form";
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";
     private String PRODUCT_NAME = ".product-title.sp";
     private String PRICE = ".price";
     private String QTY = ".count-value";
     private String CART_REMOVE_PRODUCT_BUTTON = ".icon.icon-cross";
     private String CART_PRODUCT_CONTAINER_BY_NAME = ".//div[@class='cart']//div[.='$ProductName' and @class='checkout-product-image']/ancestor::div[1]";
+
+    public OrderProcessingForm orderProcessingForm=new OrderProcessingForm(ORDER_PROCESSING_FORM);
 
     @Step
     public Product getProductFromCart(Integer index) {

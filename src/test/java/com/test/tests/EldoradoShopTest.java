@@ -7,6 +7,7 @@ import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
 import com.test.pages.*;
+import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
@@ -172,6 +173,9 @@ public class EldoradoShopTest extends TestBase {
         homePage.bestSuggestions.selectCategoryOfSlickSlackMenuSection(2)
                 .addToCartProduct(5)
                 .ensureThatNotificationContains(homePage.bestSuggestions.getProductName(5));
+        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
+        checkoutPage.orderProcessingForm.fillContactInformation("976321452","Masterok","masterok@gmail.com");
+        int i=0;
     }
 
 

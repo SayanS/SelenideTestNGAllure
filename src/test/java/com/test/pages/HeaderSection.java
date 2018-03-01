@@ -1,6 +1,7 @@
 package com.test.pages;
 
 import com.codeborne.selenide.Condition;
+import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

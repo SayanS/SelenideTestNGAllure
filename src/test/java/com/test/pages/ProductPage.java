@@ -1,5 +1,6 @@
 package com.test.pages;
 
+import com.test.pages.checkoutpage.CheckoutPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Condition.visible;
