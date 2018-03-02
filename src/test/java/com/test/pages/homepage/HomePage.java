@@ -7,19 +7,21 @@ public class HomePage extends BasePage {
     String BEST_SUGGESTIONS = "(.//div[@class='row section-items-list']/ancestor::section)[1]";
     String SEASON_SUGGESTIONS="(.//div[@class='row section-items-list']/ancestor::section)[2]";
 
+    String DELIVERY_TYPES = "form .delivery-types.order-processing-part";
+    String PROMOTION_BLOCK = "form .promotion-block.order-processing-part";
+    String PAYMENT_TYPES = "form .payment-types.order-processing-part";
+    String OFFER_DETAILS = "form .offer-details.order-processing-part";
+
     public ProductSection bestSuggestions=new ProductSection(BEST_SUGGESTIONS);
     public ProductSection seasonSuggestions=new ProductSection(SEASON_SUGGESTIONS);
-
 
     @Step
     public HomePage clearCart() throws InterruptedException {
         if (!headerSection.getCartItemCount().equals("0")) {
-            return headerSection.clickCartIcon().clearCart();
+            return headerSection.clickCartIcon().checkoutCart.clearCart();
         } else {
             return this;
         }
     }
-
-
 
 }

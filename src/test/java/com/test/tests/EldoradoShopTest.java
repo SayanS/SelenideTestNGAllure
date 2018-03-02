@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
-import com.test.pages.*;
+import com.test.pages.CatalogMenuPopUp;
+import com.test.pages.NodeItemPage;
+import com.test.pages.ShopsPage;
 import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.EndPoint;
@@ -154,7 +156,7 @@ public class EldoradoShopTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "productsForAddingToCart", enabled = true, groups = {"smoke"})
+    @Test(dataProvider = "productsForAddingToCart", enabled = true, groups = {"new"})
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage().clearCart();
         products.forEach(product ->
@@ -164,18 +166,20 @@ public class EldoradoShopTest extends TestBase {
         );
         homepage.headerSection.ensureThatCartItemNumberEqualTo(String.valueOf(products.size()));
         CheckoutPage checkoutPage = homepage.headerSection.clickCartIcon();
-        checkoutPage.ensureThatCartContains(products);
+        checkoutPage.checkoutCart.ensureThatCartContains(products);
     }
 
-    @Test(enabled=true, groups = {"new"})
+    @Test(enabled = true, groups = {"new"})
     public void checkoutProcess() throws InterruptedException {
-        HomePage homePage=onHomePage().clearCart();
+        HomePage homePage = onHomePage().clearCart();
         homePage.bestSuggestions.selectCategoryOfSlickSlackMenuSection(2)
                 .addToCartProduct(5)
                 .ensureThatNotificationContains(homePage.bestSuggestions.getProductName(5));
-        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
-        checkoutPage.orderProcessingForm.fillContactInformation("976321452","Masterok","masterok@gmail.com");
-        int i=0;
+        homePage.headerSection.clickCartIcon()
+                .selectCheckoutStep1()
+                .fillContactInformation("976321452", "Masterok", "masterok@gmail.com")
+                .clickOnNextStepButton();
+        int i = 0;
     }
 
 

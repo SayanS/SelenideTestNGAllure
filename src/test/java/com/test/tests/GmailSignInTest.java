@@ -14,7 +14,7 @@ import ru.yandex.qatools.allure.annotations.Stories;
 public class GmailSignInTest extends TestBase {
 
     @Parameters({ "url" })
-    @Test(dataProvider = "userProvider", groups={"smoke"})
+    @Test(dataProvider = "userProvider", groups={"new"})
     public void signIn(User user, ITestContext context) throws InterruptedException {
         onGooglePage(context.getCurrentXmlTest().getParameter("url"))
                 .clickOnSignInButton().enterUserEmail(user.getEmail())

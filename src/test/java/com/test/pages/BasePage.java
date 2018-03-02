@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
-public class BasePage {
+public abstract class BasePage {
     public HeaderSection headerSection=page(HeaderSection.class);
     private String notification=".notification.notification-visible div";
     public void clearCookies() {
