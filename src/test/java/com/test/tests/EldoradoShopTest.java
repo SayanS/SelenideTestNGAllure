@@ -39,7 +39,7 @@ public class EldoradoShopTest extends TestBase {
         shopsPage.isShownAllCities(shopCities);
     }
 
-    @Test(dataProvider = "cityIndexesBestWay", enabled = true, groups = {"smoke"})
+    @Test(dataProvider = "cityIndexesBestWay", enabled = true, groups = {"new"})
     public void checkAbilityToSelectDefaultCityBestWay(Integer index) {
         String selectedCityName;
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
@@ -178,8 +178,9 @@ public class EldoradoShopTest extends TestBase {
         homePage.headerSection.clickCartIcon()
                 .selectCheckoutStep1()
                 .fillContactInformation("976321452", "Masterok", "masterok@gmail.com")
-                .clickOnNextStepButton();
-        int i = 0;
+                .clickOnNextStepButton()
+                .selectGetFromShopOption();
+
     }
 
 

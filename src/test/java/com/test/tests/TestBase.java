@@ -5,7 +5,7 @@ import com.test.pages.GooglePage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.CustomTestListener;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.open;
 public class TestBase {
     WebDriver driver;
 
-    @BeforeTest
+    @BeforeClass
     public void setUp() {
 //        In case webdriver initialize by Selenide
 //        System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdrivers/geckodriver");

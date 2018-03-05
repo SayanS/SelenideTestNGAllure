@@ -1,5 +1,6 @@
 package com.test.pages.checkoutpage;
 
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -7,20 +8,20 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
 public class CheckoutStep1 extends CheckoutPage{
-    String FORM_XPATH=".//div[contains(@class,'contact-details')]/div[@class='content']";
+    String STEP1_FORM_XPATH =".//div[contains(@class,'contact-details')]/div[@class='content']";
 
-    By CONTACT_DETAILS_FIELD_NAME = By.xpath(FORM_XPATH+"//input[@name='name']");
-    By CONTACT_DETAILS_FIELD_PHONE = By.xpath(FORM_XPATH+"//input[@name='phone']");
-    By CONTACT_DETAILS_FIELD_EMAIL = By.xpath(FORM_XPATH+"//input[@name='email']");
-    By CONTACT_DETAILS_FIELD_NEXT_STEP_BUTTON = By.xpath(FORM_XPATH+"//div[@class='continue-button']");
+    By CONTACT_DETAILS_FIELD_NAME = By.xpath(STEP1_FORM_XPATH +"//input[@name='name']");
+    By CONTACT_DETAILS_FIELD_PHONE = By.xpath(STEP1_FORM_XPATH +"//input[@name='phone']");
+    By CONTACT_DETAILS_FIELD_EMAIL = By.xpath(STEP1_FORM_XPATH +"//input[@name='email']");
+    By NEXT_STEP_BUTTON = By.xpath(STEP1_FORM_XPATH +"//div[contains(@class,'continue-button')]");
 
-    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_NAME = By.xpath(FORM_XPATH+".//input[@name='name']/following-sibling::span[@class='error-input']");
-    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_PHONE = By.xpath(FORM_XPATH+".//input[@name='phone']/following-sibling::span[@class='error-input']");
-    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_EMAIL = By.xpath(FORM_XPATH+".//input[@name='email']/following-sibling::span[@class='error-input']");
+    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_NAME = By.xpath(STEP1_FORM_XPATH +".//input[@name='name']/following-sibling::span[@class='error-input']");
+    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_PHONE = By.xpath(STEP1_FORM_XPATH +".//input[@name='phone']/following-sibling::span[@class='error-input']");
+    By CONTACT_DETAILS_FIELD_ERROR_MESSAGE_EMAIL = By.xpath(STEP1_FORM_XPATH +".//input[@name='email']/following-sibling::span[@class='error-input']");
 
-    By CONTACT_DETAILS_FIELD_REQUIRED_NAME = By.xpath(FORM_XPATH+".//input[@name='name']/following-sibling::span[@class='require']/span");
-    By CONTACT_DETAILS_FIELD_REQUIRED_PHONE = By.xpath(FORM_XPATH+".//input[@name='phone']/following-sibling::span[@class='require']/span");
-    By CONTACT_DETAILS_FIELD_REQUIRED_EMAIL = By.xpath(FORM_XPATH+".//input[@name='email']/following-sibling::span[@class='require']/span");
+    By CONTACT_DETAILS_FIELD_REQUIRED_NAME = By.xpath(STEP1_FORM_XPATH +".//input[@name='name']/following-sibling::span[@class='require']/span");
+    By CONTACT_DETAILS_FIELD_REQUIRED_PHONE = By.xpath(STEP1_FORM_XPATH +".//input[@name='phone']/following-sibling::span[@class='require']/span");
+    By CONTACT_DETAILS_FIELD_REQUIRED_EMAIL = By.xpath(STEP1_FORM_XPATH +".//input[@name='email']/following-sibling::span[@class='require']/span");
 
 
     @Step
@@ -35,7 +36,7 @@ public class CheckoutStep1 extends CheckoutPage{
 
     @Step
     public CheckoutStep2 clickOnNextStepButton() {
-        $(CONTACT_DETAILS_FIELD_NEXT_STEP_BUTTON).click();
+        $(NEXT_STEP_BUTTON).waitUntil(Condition.enabled,3000).click();
         return page(CheckoutStep2.class);
     }
 
