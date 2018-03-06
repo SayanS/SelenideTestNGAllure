@@ -179,8 +179,13 @@ public class EldoradoShopTest extends TestBase {
                 .selectCheckoutStep1()
                 .fillContactInformation("976321452", "Masterok", "masterok@gmail.com")
                 .clickOnNextStepButton()
-                .selectGetFromShopOption();
-
+                .selectGetFromShopOption()
+                .enterCityName("Ха")
+                .ensureThatAutosuggestedCitiesStartsWith("Ха")
+                .selectCity("Харьков")
+                .selectShop("(T019)")
+                .closeMapContainer();
+int i=0;
     }
 
 
