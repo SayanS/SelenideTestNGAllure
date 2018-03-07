@@ -39,7 +39,7 @@ public class EldoradoShopTest extends TestBase {
         shopsPage.isShownAllCities(shopCities);
     }
 
-    @Test(dataProvider = "cityIndexesBestWay", enabled = true, groups = {"new"})
+    @Test(dataProvider = "cityIndexesBestWay", enabled = true, groups = {"nonexecutable"})
     public void checkAbilityToSelectDefaultCityBestWay(Integer index) {
         String selectedCityName;
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
@@ -49,7 +49,7 @@ public class EldoradoShopTest extends TestBase {
 
     }
 
-    @Test(enabled = true, groups = {"smoke"})
+    @Test(enabled = true, groups = {"nonexecutable"})
     public void checkAbilityToSelectDefaultCity() {
         String selectedCityName;
         Integer totalCities;
@@ -62,7 +62,7 @@ public class EldoradoShopTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "cityIndexes", enabled = false, groups = {"smoke"})
+    @Test(dataProvider = "cityIndexes", enabled = false, groups = {"nonexecutable"})
     public void checkAbilityToSelectDefaultCityParallelExecution(List<Integer> cityIndexes) {
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         cityIndexes.forEach(index -> {
@@ -73,7 +73,7 @@ public class EldoradoShopTest extends TestBase {
         });
     }
 
-    @Test(enabled = false, groups = {"smoke"})
+    @Test(enabled = false, groups = {"nonexecutable"})
     public void isAllCitiesInJson() throws IOException {
 //        FileReader reader = new FileReader("./src/test/resources/data/shops.json");
 //        JsonParser jsonParser = new JsonParser();
@@ -93,7 +93,7 @@ public class EldoradoShopTest extends TestBase {
         shops.forEach(shop -> citiesJson.add(shop.getName().split(", ")[1]));
     }
 
-    @Test(enabled = false, groups = {"smoke"})
+    @Test(enabled = false, groups = {"nonexecutable"})
     public void isResponseContainsAllCities() {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         Response response =
@@ -102,7 +102,7 @@ public class EldoradoShopTest extends TestBase {
         Assert.assertEquals(response.statusCode(), 200);
     }
 
-    @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
+    @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaRestAssured(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
@@ -114,7 +114,7 @@ public class EldoradoShopTest extends TestBase {
         Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
-    @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
+    @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
         RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
@@ -123,7 +123,7 @@ public class EldoradoShopTest extends TestBase {
         Assert.assertTrue(actualCities.containsAll(expectedCities));
     }
 
-    @Test(dataProvider = "catalogMenuItems", enabled = true, groups = "smoke")
+    @Test(dataProvider = "catalogMenuItems", enabled = true, groups = "nonexecutable")
     public void isAppropreateSubItemsShownForCatalogMenuItems(LinkedHashMap<String, LinkedHashMap<String, List<String>>> catalog) {
         Integer menuItemIndex = 1;
         CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
@@ -142,7 +142,7 @@ public class EldoradoShopTest extends TestBase {
     }
 
 
-    @Test(dataProvider = "catalogMenuItemsForParallel", enabled = false, groups = {"smoke"})
+    @Test(dataProvider = "catalogMenuItemsForParallel", enabled = false, groups = {"nonexecutable"})
     public void isCatalogMenuItemsOpenedRelatedNodeItemPage(String item, LinkedHashMap<String, List<String>> catalog) {
         CatalogMenuPopUp catalogMenuPopUp = onHomePage().headerSection.openCatalogMenu();
         catalogMenuPopUp.ensureThatTitle("Каталог товаров");
@@ -156,7 +156,7 @@ public class EldoradoShopTest extends TestBase {
         }
     }
 
-    @Test(dataProvider = "productsForAddingToCart", enabled = true, groups = {"new"})
+    @Test(dataProvider = "productsForAddingToCart", enabled = true, groups = {"nonexecutable"})
     public void checkAbilityToAddProductToCart(List<Product> products) throws InterruptedException {
         HomePage homepage = onHomePage().clearCart();
         products.forEach(product ->
@@ -183,8 +183,10 @@ public class EldoradoShopTest extends TestBase {
                 .enterCityName("Ха")
                 .ensureThatAutosuggestedCitiesStartsWith("Ха")
                 .selectCity("Харьков")
-                .selectShop("(T019)")
-                .closeMapContainer();
+                .searchShop("(T019)")
+                .selectFirstShopBy("(T019)")
+                .closeMapContainer()
+                .ensureThatSelectedDeliveryAddessContains("(T019)","Харьков, ул. Вернадского, 12 (метро Проспект Гагарина)");
 int i=0;
     }
 

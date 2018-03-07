@@ -10,8 +10,8 @@
     <allure.version>1.5.0.RC2</allure.version>
     <aspectj.version>1.8.3</aspectj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!--<run.browser>chrome</run.browser>-->
-    <!--<base.url>https://eldorado.ua/</base.url>-->
+    <run.browser>chrome</run.browser>
+    <base.url>https://eldorado.ua/</base.url>
     <suiteXml>mmm.xml</suiteXml>
   </properties>
 
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>selenide</artifactId>
-      <version>4.8</version>
+      <version>4.10.01</version>
     </dependency>
 
     <dependency>

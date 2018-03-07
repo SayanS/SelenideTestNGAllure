@@ -7,6 +7,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
+
 public class CheckoutStep1 extends CheckoutPage{
     String STEP1_FORM_XPATH =".//div[contains(@class,'contact-details')]/div[@class='content']";
 
@@ -26,6 +27,7 @@ public class CheckoutStep1 extends CheckoutPage{
 
     @Step
     public CheckoutStep1 fillContactInformation(String phone, String name, String email) throws InterruptedException {
+        $(CONTACT_DETAILS_FIELD_PHONE).click();
         $(CONTACT_DETAILS_FIELD_PHONE).append(phone);
         $(CONTACT_DETAILS_FIELD_NAME).clear();
         $(CONTACT_DETAILS_FIELD_NAME).val(name);

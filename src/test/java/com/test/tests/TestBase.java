@@ -1,6 +1,5 @@
 package com.test.tests;
 
-import com.codeborne.selenide.Configuration;
 import com.test.pages.GooglePage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.CustomTestListener;
@@ -12,7 +11,8 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
-@Test(groups = {"new","all"})
+
+@Test(groups = {"new", "all"})
 @Listeners({CustomTestListener.class})
 public class TestBase {
     WebDriver driver;
@@ -20,16 +20,18 @@ public class TestBase {
     @BeforeClass
     public void setUp() {
 //        In case webdriver initialize by Selenide
-//        System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdrivers/geckodriver");
-//        Configuration.dismissModalDialogs = true;
+//        For Selenide version lower then 4.10.01
 //        Configuration.browser = "marionette";
-        Configuration.startMaximized = true;
+//        System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdrivers/geckodriver");
 
 //        In case webdriver initialize by Selenide
-        System.setProperty("webdriver.chrome.driver", "./src/test/resources/webdrivers/chromedriver");
-//        System.setProperty("Selenide.browser", "chrome");
-        Configuration.browser="chrome";
-        Configuration.baseUrl= "https://eldorado.ua/";
+//        System.setProperty("webdriver.chrome.driver", "./src/test/resources/webdrivers/chromedriver");
+////      System.setProperty("Selenide.browser", "chrome");
+//        Configuration.browser="chrome";
+
+//        Configuration.dismissModalDialogs = true;
+//        Configuration.startMaximized = true;
+//        Configuration.baseUrl = "https://eldorado.ua/";
 
 //       Custom webdriver 1-st approach (the second one - using CustomWebDriver.class)
 //       FirefoxOptions opts = new FirefoxOptions();
@@ -40,9 +42,9 @@ public class TestBase {
 //       WebDriverRunner.setWebDriver(driver);
 
 //        In case custom webdriver 2-nd approach
-//        System.setProperty("browser", "com.test.util.CustomWebDriver");
+        System.setProperty("browser", "com.test.util.CustomWebDriver");
 
-//        baseUrl = System.getProperty("base.url");
+        baseUrl = System.getProperty("base.url");
 //        if (baseUrl == null) {
 ////            baseUrl="https://www.google.com/";
 //            baseUrl = "https://eldorado.ua/";

@@ -1,5 +1,6 @@
 package com.test.pages.checkoutpage;
 
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -18,6 +19,7 @@ public class CheckoutStep2 extends CheckoutPage {
     By DELIVERY_ADDRESS_FLAT_NUMBER = By.xpath(".//input[@name='apartment']");
     By DELIVERY_ADDRESS_ADDITIONAL_INFO = By.xpath(".//textarea[@name='comment']");
     By NEXT_STEP_BUTTON = By.xpath(STEP2_FORM+"//div[contains(@class,'continue-button')]");
+    String SELECTED_DELIVERY_ADDRESS=".selected-value";
 
     @Step
     public MapContainer selectGetFromShopOption() {
@@ -62,6 +64,13 @@ public class CheckoutStep2 extends CheckoutPage {
     public CheckoutStep3 clickOnNextStepButton(){
         $(NEXT_STEP_BUTTON).click();
         return page(CheckoutStep3.class);
+    }
+
+    @Step
+    public CheckoutStep2 ensureThatSelectedDeliveryAddessContains(String shopCode, String address){
+        $(SELECTED_DELIVERY_ADDRESS).shouldBe(Condition.text(shopCode));
+        $(SELECTED_DELIVERY_ADDRESS).shouldBe(Condition.text(address));
+        return page(CheckoutStep2.class);
     }
 
 }
