@@ -45,10 +45,10 @@ public class TestBase {
         System.setProperty("browser", "com.test.util.CustomWebDriver");
 
         baseUrl = System.getProperty("base.url");
-//        if (baseUrl == null) {
-////            baseUrl="https://www.google.com/";
-//            baseUrl = "https://eldorado.ua/";
-//        }
+        if (baseUrl == null) {
+//            baseUrl="https://www.google.com/";
+            baseUrl = "https://eldorado.ua/";
+        }
         onHomePage().headerSection.acceptGeolocationCity();
     }
 

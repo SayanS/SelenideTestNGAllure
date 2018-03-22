@@ -3,9 +3,12 @@ package com.test.tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
+import com.test.models.User;
 import com.test.pages.CatalogMenuPopUp;
 import com.test.pages.NodeItemPage;
 import com.test.pages.ShopsPage;
@@ -169,7 +172,7 @@ public class EldoradoShopTest extends TestBase {
         checkoutPage.checkoutCart.ensureThatCartContains(products);
     }
 
-    @Test(enabled = true, groups = {"new"})
+    @Test(enabled = true, groups = {"nonexecutable"})
     public void checkoutProcess() throws InterruptedException {
         HomePage homePage = onHomePage().clearCart();
         homePage.bestSuggestions.selectCategoryOfSlickSlackMenuSection(2)
@@ -186,8 +189,22 @@ public class EldoradoShopTest extends TestBase {
                 .searchShop("(T019)")
                 .selectFirstShopBy("(T019)")
                 .closeMapContainer()
-                .ensureThatSelectedDeliveryAddessContains("(T019)","Харьков, ул. Вернадского, 12 (метро Проспект Гагарина)");
-int i=0;
+                .ensureThatSelectedDeliveryAddessContains("(T019)", "Харьков, ул. Вернадского, 12 (метро Проспект Гагарина)");
+        int i = 0;
+    }
+
+    @Test(enabled = true, groups = {"new"})
+    public void checkObjectToMap () throws IOException {
+        User user;
+        ObjectMapper mapper = new ObjectMapper();
+        user = mapper.readValue(new File("./src/test/resources/data/user.json"),new TypeReference<User>() {});
+
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(user);// obj is your object
+
+        Map<String,User> result = new Gson().fromJson(json, Map.class);
+
+        int i=0;
     }
 
 
