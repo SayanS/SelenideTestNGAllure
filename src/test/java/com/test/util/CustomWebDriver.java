@@ -21,7 +21,7 @@ public class CustomWebDriver implements WebDriverProvider {
         Properties prop = new Properties();
         InputStream input = null;
         try {
-            input = new FileInputStream("./src/test/resources/config.properties");
+            input = new FileInputStream("./src/test/resources/selenideConfig.properties");
             prop.load(input);
         } catch (java.io.IOException e) {
             e.printStackTrace();

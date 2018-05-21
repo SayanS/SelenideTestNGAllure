@@ -4,7 +4,7 @@
 	<test name="Test1">
 		<classes>
 			<class name="com.test.tests.GmailSignInTest"/>
-		    <class name="com.test.tests.GoogleSearchTest"/>
+		    <!--<class name="com.test.tests.GoogleSearchTest"/>-->
 		</classes>
 	</test>  
 </suite>

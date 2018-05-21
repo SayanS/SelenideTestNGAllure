@@ -1,7 +1,7 @@
 package com.test.pages;
 
 import com.test.pages.checkoutpage.CheckoutPage;
-import ru.yandex.qatools.allure.annotations.Step;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;

@@ -1,8 +1,8 @@
 package com.test.pages;
 
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;

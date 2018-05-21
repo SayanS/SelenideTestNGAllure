@@ -1,19 +1,12 @@
 package com.test.tests;
 
-//import io.qameta.allure.Description;
-//import io.qameta.allure.Features;
-//import io.qameta.allure.Stories;
+import io.qameta.allure.Description;
 import org.testng.ITestContext;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
 
 @Test
-@Features("Checking search")
-@Stories("Checking global search functionality")
 public class GoogleSearchTest extends TestBase {
     @DataProvider(name = "searchingTextData1", parallel = true)
     public Object[][] searchingTextData1() {

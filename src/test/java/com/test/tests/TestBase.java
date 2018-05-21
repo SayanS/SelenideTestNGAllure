@@ -1,13 +1,17 @@
 package com.test.tests;
 
+import com.codeborne.selenide.Configuration;
 import com.test.pages.GooglePage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.CustomTestListener;
-import org.openqa.selenium.WebDriver;
+import io.qameta.allure.Step;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Step;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
@@ -15,25 +19,29 @@ import static com.codeborne.selenide.Selenide.open;
 @Test(groups = {"new", "all"})
 @Listeners({CustomTestListener.class})
 public class TestBase {
-    WebDriver driver;
+//    WebDriver driver;
 
     @BeforeClass
-    public void setUp() {
+    public void setUp() throws IOException {
 //        In case webdriver initialize by Selenide
 //        For Selenide version lower then 4.10.01
 //        Configuration.browser = "marionette";
 //        System.setProperty("webdriver.firefox.driver", "./src/test/resources/webdrivers/geckodriver");
 
-//        In case webdriver initialize by Selenide
+////        In case webdriver initialize by Selenide
 //        System.setProperty("webdriver.chrome.driver", "./src/test/resources/webdrivers/chromedriver");
 ////      System.setProperty("Selenide.browser", "chrome");
-//        Configuration.browser="chrome";
 
-//        Configuration.dismissModalDialogs = true;
-//        Configuration.startMaximized = true;
-//        Configuration.baseUrl = "https://eldorado.ua/";
+        Properties configProp = new Properties();
+        configProp.load(new FileInputStream("./src/test/resources/selenideConfig.properties"));
 
-//       Custom webdriver 1-st approach (the second one - using CustomWebDriver.class)
+        Configuration.browser = configProp.getProperty("browser");
+        Configuration.baseUrl = configProp.getProperty("baseUrl");
+        Configuration.dismissModalDialogs = true;
+        Configuration.startMaximized = true;
+
+
+////       Custom webdriver 1-st approach (the second one - using CustomWebDriver.class)
 //       FirefoxOptions opts = new FirefoxOptions();
 //       opts.addArguments("-private");
 //       opts.addArguments("--start-maximized");
@@ -41,16 +49,16 @@ public class TestBase {
 //       driver = new FirefoxDriver(opts);
 //       WebDriverRunner.setWebDriver(driver);
 
-//        In case custom webdriver 2-nd approach
-        System.setProperty("browser", "com.test.util.CustomWebDriver");
-
-        baseUrl = System.getProperty("base.url");
-        if (baseUrl == null) {
-//            baseUrl="https://www.google.com/";
-            baseUrl = "https://eldorado.ua/";
-        }
-        onHomePage().headerSection.acceptGeolocationCity();
+////        In case custom webdriver 2-nd approach
+//        System.setProperty("browser", "com.test.util.CustomWebDriver");
+//
+//        baseUrl = System.getProperty("base.url");
+//        if (baseUrl == null) {
+//            baseUrl = "https://eldorado.ua/";
+//        }
+//        onHomePage().headerSection.acceptGeolocationCity();
     }
+
 
     @Step
     public GooglePage onGooglePage(String url) {

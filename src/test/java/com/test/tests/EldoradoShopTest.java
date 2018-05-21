@@ -21,8 +21,6 @@ import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +30,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 
 @Test(dataProviderClass = EldoradoShopDataProviders.class)
-@Features("Shop header menu")
-@Stories("Checking features related to Shop item of the Header menu")
 public class EldoradoShopTest extends TestBase {
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
@@ -195,15 +191,16 @@ public class EldoradoShopTest extends TestBase {
 
     @Test(enabled = true, groups = {"new"})
     public void checkObjectToMap () throws IOException {
-        User user;
+        List<User> user;
         ObjectMapper mapper = new ObjectMapper();
         user = mapper.readValue(new File("./src/test/resources/data/user.json"),new TypeReference<User>() {});
+
+//        https://www.mkyong.com/java/java-convert-object-to-map-example/
 
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(user);// obj is your object
 
         Map<String,User> result = new Gson().fromJson(json, Map.class);
-
         int i=0;
     }
 

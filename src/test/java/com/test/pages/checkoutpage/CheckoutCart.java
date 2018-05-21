@@ -6,20 +6,16 @@ import com.codeborne.selenide.SelenideElement;
 import com.test.models.Product;
 import com.test.pages.BasePage;
 import com.test.pages.homepage.HomePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Configuration.baseUrl;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.page;
+import static com.codeborne.selenide.Selenide.*;
 
 public class CheckoutCart extends BasePage{
     private String CART_PRODUCT_CONTAINERS = "div.cart div.good-card";

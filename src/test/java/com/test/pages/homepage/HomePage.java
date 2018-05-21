@@ -1,7 +1,7 @@
 package com.test.pages.homepage;
 
 import com.test.pages.BasePage;
-import ru.yandex.qatools.allure.annotations.Step;
+import io.qameta.allure.Step;
 
 public class HomePage extends BasePage {
     String BEST_SUGGESTIONS = "(.//div[@class='row section-items-list']/ancestor::section)[1]";
