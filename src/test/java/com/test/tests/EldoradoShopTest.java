@@ -3,8 +3,6 @@ package com.test.tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
@@ -14,6 +12,7 @@ import com.test.pages.NodeItemPage;
 import com.test.pages.ShopsPage;
 import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
+import com.test.util.Converters;
 import com.test.util.EndPoint;
 import com.test.util.RestAssuredConfiguration;
 import io.restassured.response.Response;
@@ -190,18 +189,28 @@ public class EldoradoShopTest extends TestBase {
     }
 
     @Test(enabled = true, groups = {"new"})
-    public void checkObjectToMap () throws IOException {
-        List<User> user;
+    public void checkObjectToMap() throws IOException {
+        User user;
         ObjectMapper mapper = new ObjectMapper();
-        user = mapper.readValue(new File("./src/test/resources/data/user.json"),new TypeReference<User>() {});
+        user = mapper.readValue(new File("./src/test/resources/data/user.json"), new TypeReference<User>() {
+        });
 
-//        https://www.mkyong.com/java/java-convert-object-to-map-example/
+        Converters converters = new Converters();
+        Map<String, User> result = converters.jsonPojoToMap(User.class, "./src/test/resources/data/user.json");
 
-        Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(user);// obj is your object
+        // json -> Map
+//        Gson gson = new GsonBuilder().create();
+//        String json = gson.toJson(users.get(0));
+//        Map<String,User> result = new Gson().fromJson(json, Map.class);
 
-        Map<String,User> result = new Gson().fromJson(json, Map.class);
-        int i=0;
+////        pojo -> Map
+//        Map<String, Object> map = mapper.convertValue(users.get(0), Map.class);
+        converters.pojoToMap(user);
+
+////         Map -> Pojo
+//        mapper.convertValue(map, User.class);
+
+        int i = 0;
     }
 
 
