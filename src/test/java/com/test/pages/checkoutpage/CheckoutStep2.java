@@ -67,8 +67,7 @@ public class CheckoutStep2 extends CheckoutPage {
     }
 
     @Step
-    public CheckoutStep2 ensureThatSelectedDeliveryAddessContains(String shopCode, String address){
-        $(SELECTED_DELIVERY_ADDRESS).shouldBe(Condition.text(shopCode));
+    public CheckoutStep2 ensureThatSelectedDeliveryAddessContains(String address){
         $(SELECTED_DELIVERY_ADDRESS).shouldBe(Condition.text(address));
         return page(CheckoutStep2.class);
     }

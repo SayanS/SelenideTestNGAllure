@@ -91,9 +91,9 @@ public class EldoradoShopDataProviders {
 
     @DataProvider
     public Object[][] productsForAddingToCart() {
-        return new Object[][]{{Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4799.-", null, null, 1),
-                new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6888.-", null, null, 1))},
-                {Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "78999.-", null, null, 1))}};
+        return new Object[][]{{Arrays.asList(new Product("71215295", "Телевизор ELENBERG 32DH4330 + Т2", "4799.-", null, null,null, 1),
+                new Product("71237899", "Телевизор ELENBERG 39DF4530 +Т2", "6888.-", null, null, null, 1))},
+                {Arrays.asList(new Product("71226991", "Телевизор SAMSUNG QE55Q7CAMUXUA QLED", "78999.-", null, null, null, 1))}};
     }
 
 }

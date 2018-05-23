@@ -1,12 +1,12 @@
 package com.test.pages.homepage;
 
 import com.codeborne.selenide.SelenideElement;
+import com.test.models.Product;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
 
 public class ProductSection {
 
@@ -56,16 +56,27 @@ public class ProductSection {
     @Step
     public SelenideElement loadMoreProductsUntilVisabilityOfConteiner(Integer productNumber) {
         SelenideElement section = $(By.xpath(PRODUCTS_SECTION));
-        while (productNumber > Integer.valueOf(section.$$(PRODUCT_CONTAINER).size() - 1)) {
+        while (productNumber > section.$$(PRODUCT_CONTAINER).size() - 1) {
             section.$(PRODUCT_CONTAINER_LOAD_MORE).click();
         }
         return section.$$(PRODUCT_CONTAINER).get(productNumber - 1);
     }
 
     @Step
-    public HomePage addToCartProduct(Integer productNumber) {
-        loadMoreProductsUntilVisabilityOfConteiner(productNumber).$(PRODUCT_CONTAINER_BUY_BUTTON).click();
-        return page(HomePage.class);
+    public Product addToCartProduct(Integer productNumber) {
+        String PRODUCT_ID=".goods-code span";
+        String PRODUCT_TITLE=".title.lp div";
+        String PRODUCT_CURRENT_PRICE=".current-price span";
+        String PRODUCT_OLD_PRICE=".old-price-value";
+        Product product=new Product();
+        SelenideElement productContainer=loadMoreProductsUntilVisabilityOfConteiner(productNumber);
+        product.setId(productContainer.find(PRODUCT_ID).getText());
+        product.setModelName(productContainer.find(PRODUCT_TITLE).getAttribute("title"));
+        product.setQty(1);
+        product.setPrice(productContainer.find(PRODUCT_CURRENT_PRICE).getText());
+        product.setOldPrice(productContainer.find(PRODUCT_OLD_PRICE).getText());
+        productContainer.$(PRODUCT_CONTAINER_BUY_BUTTON).click();
+        return product;
     }
 
     @Step

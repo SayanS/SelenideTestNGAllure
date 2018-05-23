@@ -6,14 +6,16 @@ public class Product {
     private String price;
     private String priceDiscount;
     private String promotionPrice;
+    private String oldPrice;
     private Integer qty;
 
-    public Product(String id, String modelName, String price, String priceDiscount, String promotionPrice, Integer qty) {
+    public Product(String id, String modelName, String price, String priceDiscount, String promotionPrice, String oldPrice,Integer qty) {
         this.id = id;
         this.modelName = modelName;
         this.price = price;
         this.priceDiscount = priceDiscount;
         this.promotionPrice = promotionPrice;
+        this.oldPrice=oldPrice;
         this.qty = qty;
     }
 
@@ -41,7 +43,7 @@ public class Product {
     }
 
     public void setPrice(String price) {
-        this.price = price;
+        this.price = price.replaceAll(" ","");
     }
 
     public String getPriceDiscount() {
@@ -58,6 +60,14 @@ public class Product {
 
     public void setPromotionPrice(String promotionPrice) {
         this.promotionPrice = promotionPrice;
+    }
+
+    public String getOldPrice() {
+        return oldPrice;
+    }
+
+    public void setOldPrice(String priceDiscount) {
+        this.oldPrice = oldPrice;
     }
 
     public Integer getQty() {

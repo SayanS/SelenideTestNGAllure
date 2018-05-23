@@ -17,8 +17,8 @@ public class MapContainer extends BasePage {
     private String SHOP_FIELD = "input[name='shops']";
     private By AUTOSUGGESTED_CITIES_LIST = By.xpath(".//input[@name='eldoradoCities']/ancestor::div[@class='react-autosuggest__container']/following-sibling::div//ul/li");
     private By AUTOSUGGESTED_SHOPS_CONTAINERS = By.xpath(".//input[@name='eldoradoCities']/ancestor::div[@class='react-autosuggest__container']//ul/li//div[@class='row shops-title false']");
-    //private By AUTOSUGGESTED_SHOPS_TITLES = By.xpath(AUTOSUGGESTED_SHOPS_CONTAINERS_XPATH + "/div[contains(@class,'city-title')]");
     private By CLEAR_CITY_FIELD_BUTTON = By.xpath("//i[@class='icon-cross']");
+    private By SHOPS_CONTAINERS_FOR_SELECT = By.xpath("//span[@class='suggestion-before-article']/ancestor::div[1]");
 
     @Step
     public MapContainer enterCityName(String city) {
@@ -47,20 +47,25 @@ public class MapContainer extends BasePage {
     @Step
     public MapContainer searchShop(String shopCode) {
         $(SHOP_FIELD).sendKeys(shopCode);
-            return page(MapContainer.class);
+        return page(MapContainer.class);
     }
 
     @Step
-    public MapContainer selectFirstShopBy(String addressOrCode){
+    public MapContainer selectFirstShopBy(String addressOrCode) {
         $$(AUTOSUGGESTED_SHOPS_CONTAINERS).filter(Condition.text(addressOrCode)).get(0).hover().click();
         return page(MapContainer.class);
     }
 
     @Step
     public CheckoutStep2 closeMapContainer() {
-        (new Actions(getWebDriver())).moveToElement($(".modal-container.modal-map-conainer.modal-show div.modal-content"), 980, 50)
+        (new Actions(getWebDriver())).moveToElement($(".modal-container.modal-map-conainer.modal-show"), 980, 50)
                 .click().build().perform();
         return page(CheckoutStep2.class);
     }
 
+    @Step
+    public MapContainer selectShopByNumber(String value) {
+        $$(SHOPS_CONTAINERS_FOR_SELECT).filter(Condition.text(value)).get(0).click();
+        return page(MapContainer.class);
+    }
 }

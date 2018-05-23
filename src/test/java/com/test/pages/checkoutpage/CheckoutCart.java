@@ -38,10 +38,16 @@ public class CheckoutCart extends BasePage{
     @Step
     public CheckoutPage ensureThatCartContains(List<Product> products) {
         products.forEach(product -> {
+           ensureThatCartContains(product);
+        });
+        return page(CheckoutPage.class);
+    }
+
+    @Step
+    public CheckoutPage ensureThatCartContains(Product product) {
             SelenideElement productContainer = $(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName", product.getModelName())));
             productContainer.find(PRICE).shouldHave(exactText(product.getPrice()));
             productContainer.find(QTY).shouldHave(text(product.getQty().toString()));
-        });
         return page(CheckoutPage.class);
     }
 

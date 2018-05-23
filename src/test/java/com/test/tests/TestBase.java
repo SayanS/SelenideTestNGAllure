@@ -5,6 +5,7 @@ import com.test.pages.GooglePage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.CustomTestListener;
 import io.qameta.allure.Step;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -15,6 +16,7 @@ import java.util.Properties;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 @Test(groups = {"new", "all"})
 @Listeners({CustomTestListener.class})
@@ -41,6 +43,7 @@ public class TestBase {
         Configuration.startMaximized = true;
 
 
+
 ////       Custom webdriver 1-st approach (the second one - using CustomWebDriver.class)
 //       FirefoxOptions opts = new FirefoxOptions();
 //       opts.addArguments("-private");
@@ -59,6 +62,13 @@ public class TestBase {
 //        onHomePage().headerSection.acceptGeolocationCity();
     }
 
+    @AfterClass
+    public void tearDown(){
+        if(getWebDriver()!=null){
+            getWebDriver().close();
+            getWebDriver().quit();
+        }
+    }
 
     @Step
     public GooglePage onGooglePage(String url) {

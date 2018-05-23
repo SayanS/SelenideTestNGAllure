@@ -11,7 +11,7 @@ public class CheckoutPage extends BasePage {
 
     private String CHECKOUT_STEPS_TITLES_XPATH = "(.//div[@class='title-number']/ancestor::div/div[@class='content']/preceding-sibling::div[@class='title'])";
 
-    public CheckoutCart checkoutCart=new CheckoutCart();
+    public CheckoutCart checkoutCart = new CheckoutCart();
 
     @Step
     public CheckoutStep1 selectCheckoutStep1() {
@@ -42,5 +42,6 @@ public class CheckoutPage extends BasePage {
         $(By.xpath(CHECKOUT_STEPS_TITLES_XPATH + "[5]")).click();
         return page(CheckoutStep5.class);
     }
+
 
 }

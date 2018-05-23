@@ -167,29 +167,36 @@ public class EldoradoShopTest extends TestBase {
         checkoutPage.checkoutCart.ensureThatCartContains(products);
     }
 
-    @Test(enabled = true, groups = {"nonexecutable"})
+    @Test(enabled = true, groups = {"all"})
     public void checkoutProcess() throws InterruptedException {
+        Product product = new Product();
         HomePage homePage = onHomePage().clearCart();
-        homePage.bestSuggestions.selectCategoryOfSlickSlackMenuSection(2)
-                .addToCartProduct(5)
-                .ensureThatNotificationContains(homePage.bestSuggestions.getProductName(5));
-        homePage.headerSection.clickCartIcon()
-                .selectCheckoutStep1()
+
+        product = homePage.bestSuggestions
+                .selectCategoryOfSlickSlackMenuSection(2)
+                .addToCartProduct(5);
+
+        homePage.ensureThatNotificationContains(product.getModelName());
+
+        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
+        checkoutPage.checkoutCart.ensureThatCartContains(product);
+
+        checkoutPage.selectCheckoutStep1()
                 .fillContactInformation("976321452", "Masterok", "masterok@gmail.com")
                 .clickOnNextStepButton()
                 .selectGetFromShopOption()
                 .enterCityName("Ха")
                 .ensureThatAutosuggestedCitiesStartsWith("Ха")
                 .selectCity("Харьков")
-                .searchShop("(T019)")
-                .selectFirstShopBy("(T019)")
+                .selectShopByNumber("46")
                 .closeMapContainer()
-                .ensureThatSelectedDeliveryAddessContains("(T019)", "Харьков, ул. Вернадского, 12 (метро Проспект Гагарина)");
-        int i = 0;
+                .ensureThatSelectedDeliveryAddessContains("Магазин \"Эльдорадо\" (С128), Харьков, Героев Труда, 9 - ТЦ Шок (юр. адрес - Харківська обл., Харківській район, с. Циркуни, вул. Кутузівська, будинок № 19б)")
+                .clickOnNextStepButton();
+
     }
 
-    @Test(enabled = true, groups = {"new"})
-    public void checkObjectToMap() throws IOException {
+    @Test(enabled = true, groups = {"nonexecutable"})
+    public void checkPojoToMap() throws IOException {
         User user;
         ObjectMapper mapper = new ObjectMapper();
         user = mapper.readValue(new File("./src/test/resources/data/user.json"), new TypeReference<User>() {
@@ -209,10 +216,7 @@ public class EldoradoShopTest extends TestBase {
 
 ////         Map -> Pojo
 //        mapper.convertValue(map, User.class);
-
-        int i = 0;
     }
-
 
 }
 
