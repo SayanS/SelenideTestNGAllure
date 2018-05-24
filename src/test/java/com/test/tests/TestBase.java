@@ -68,6 +68,8 @@ public class TestBase {
             getWebDriver().close();
             getWebDriver().quit();
         }
+//        Selenide.clearBrowserCookies();
+//        Selenide.clearBrowserLocalStorage();
     }
 
     @Step

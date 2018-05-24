@@ -44,8 +44,14 @@ public class CheckoutCart extends BasePage{
     }
 
     @Step
+    private SelenideElement getProductContainer(String productName){
+        return  $(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName", productName)));
+    }
+
+
+    @Step
     public CheckoutPage ensureThatCartContains(Product product) {
-            SelenideElement productContainer = $(By.xpath(CART_PRODUCT_CONTAINER_BY_NAME.replace("$ProductName", product.getModelName())));
+            SelenideElement productContainer = getProductContainer(product.getModelName());
             productContainer.find(PRICE).shouldHave(exactText(product.getPrice()));
             productContainer.find(QTY).shouldHave(text(product.getQty().toString()));
         return page(CheckoutPage.class);
@@ -66,6 +72,20 @@ public class CheckoutCart extends BasePage{
             ensureThatNotificationContains(productName);
             Selenide.Wait().withTimeout(10, TimeUnit.SECONDS).until(ExpectedConditions.urlToBe(baseUrl));
         }
+        return page(HomePage.class);
+    }
+
+    @Step
+    public HomePage clickOnIncQtyFor(String productName){
+        String INCREASE_QTY_BUTTON=".increase.change-number";
+        getProductContainer(productName).find(INCREASE_QTY_BUTTON).click();
+        return page(HomePage.class);
+    }
+
+    @Step
+    public HomePage decQtyFor(String productName){
+        String DECREASE_QTY_BUTTON=".decrease.change-number";
+        getProductContainer(productName).find(DECREASE_QTY_BUTTON).click();
         return page(HomePage.class);
     }
 

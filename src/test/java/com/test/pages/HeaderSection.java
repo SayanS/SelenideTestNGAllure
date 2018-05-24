@@ -5,7 +5,6 @@ import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -50,18 +49,19 @@ public class HeaderSection {
 
     @Step
     public ProductPage searchForProductByID(String productID) {
-        if($(GLOBAL_SEARCH_FIELD).getAttribute("value").length()>0) {
-            while(!$(GLOBAL_SEARCH_FIELD).getAttribute("value").equals("")) {
-                $(GLOBAL_SEARCH_FIELD).val(Keys.BACK_SPACE.toString());
-            }
-        }
-        $(GLOBAL_SEARCH_FIELD).pressEnter();
+        $(GLOBAL_SEARCH_FIELD).click();
+//        while (!$(GLOBAL_SEARCH_FIELD).getAttribute("value").equals("")) {
+//            $(GLOBAL_SEARCH_FIELD).val(Keys.BACK_SPACE.toString());
+            $(GLOBAL_SEARCH_FIELD).setValue("");
+        $(GLOBAL_SEARCH_FIELD).clear();
+            $(GLOBAL_SEARCH_FIELD).pressEnter();
+//        }
         $(GLOBAL_SEARCH_FIELD)
                 .val(productID)
-                .waitUntil(Condition.attribute("value",productID),5000);
+                .waitUntil(Condition.attribute("value", productID), 5000);
         $(GLOBAL_SEARCH_FIELD).click();
-        $(".image-place>img.loading").waitUntil(appear,5000);
-        $(".image-place>img.loading").waitUntil(disappear,15000);
+        $(".image-place>img.loading").waitUntil(appear, 5000);
+        $(".image-place>img.loading").waitUntil(disappear, 15000);
         $(GLOBAL_SEARCH_FIELD).pressEnter();
         return page(ProductPage.class);
     }

@@ -9,17 +9,17 @@ public class Product {
     private String oldPrice;
     private Integer qty;
 
-    public Product(String id, String modelName, String price, String priceDiscount, String promotionPrice, String oldPrice,Integer qty) {
+    public Product(String id, String modelName, String price, String priceDiscount, String promotionPrice, String oldPrice, Integer qty) {
         this.id = id;
         this.modelName = modelName;
         this.price = price;
         this.priceDiscount = priceDiscount;
         this.promotionPrice = promotionPrice;
-        this.oldPrice=oldPrice;
+        this.oldPrice = oldPrice;
         this.qty = qty;
     }
 
-    public Product(){
+    public Product() {
     }
 
     public String getId() {
@@ -43,7 +43,7 @@ public class Product {
     }
 
     public void setPrice(String price) {
-        this.price = price.replaceAll(" ","");
+        this.price = price.replaceAll(" ", "");
     }
 
     public String getPriceDiscount() {
@@ -76,6 +76,14 @@ public class Product {
 
     public void setQty(Integer qty) {
         this.qty = qty;
+    }
+
+    public void incQty() {
+        String priceStr;
+        this.qty++;
+        this.price = Double.toString(Double.valueOf(this.price.replace("-", "00")) * this.qty)
+                .replace(".00", ".-").replace(".0",".-");
+
     }
 
 

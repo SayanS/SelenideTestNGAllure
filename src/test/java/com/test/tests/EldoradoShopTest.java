@@ -3,6 +3,7 @@ package com.test.tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.dataproviders.DataFromJson;
 import com.test.dataproviders.EldoradoShopDataProviders;
 import com.test.models.Product;
 import com.test.models.Shop;
@@ -30,6 +31,7 @@ import static org.hamcrest.Matchers.hasItems;
 
 @Test(dataProviderClass = EldoradoShopDataProviders.class)
 public class EldoradoShopTest extends TestBase {
+    DataFromJson dataFromJson = new DataFromJson();
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
@@ -192,7 +194,6 @@ public class EldoradoShopTest extends TestBase {
                 .closeMapContainer()
                 .ensureThatSelectedDeliveryAddessContains("Магазин \"Эльдорадо\" (С128), Харьков, Героев Труда, 9 - ТЦ Шок (юр. адрес - Харківська обл., Харківській район, с. Циркуни, вул. Кутузівська, будинок № 19б)")
                 .clickOnNextStepButton();
-
     }
 
     @Test(enabled = true, groups = {"nonexecutable"})
@@ -216,6 +217,29 @@ public class EldoradoShopTest extends TestBase {
 
 ////         Map -> Pojo
 //        mapper.convertValue(map, User.class);
+    }
+
+    @Test(enabled = true, groups = {"new"})
+    public void checkAbilityToAddProductsToCart() throws InterruptedException {
+        List<Product> products = dataFromJson.getProducts();
+        HomePage homePage = onHomePage().clearCart();
+        products.forEach(product -> {
+            homePage.headerSection
+                    .searchForProductByID(product.getId())
+                    .clickOnBuyProductButton().ensureThatNotificationContains(product.getModelName());
+        });
+
+        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
+        checkoutPage.checkoutCart.ensureThatCartContains(products);
+
+        products.forEach(product -> {
+            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
+            product.incQty();
+        });
+
+        products.forEach(product -> checkoutPage.checkoutCart.ensureThatCartContains(products));
+
+
     }
 
 }
