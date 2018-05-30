@@ -1,5 +1,6 @@
 [
   {
+    "goodsId":"1346629",
     "id": "71251497",
     "modelName": "Смартфон HUAWEI Y7 Prime 2018 Black (51092JHA)",
     "price": "5999.-",
@@ -9,6 +10,7 @@
     "qty": "1"
   },
   {
+    "goodsId":"1294451",
     "id": "71235747",
     "modelName": "Телевизор LG 43UJ651V + подарок пульт LG Magic Remote",
     "price": "18499.-",
@@ -18,6 +20,7 @@
     "qty": "1"
   },
   {
+    "goodsId":"1290748",
     "id": "71234290",
     "modelName": "Планшет HUAWEI MediaPad T3 10 LTE 16GB Grey",
     "price": "5499.-",
@@ -27,6 +30,7 @@
     "qty": "1"
   },
   {
+    "goodsId":"1286828",
     "id": "71232607 ",
     "modelName": "Телевизор SAMSUNG UE32J4710AKXUA",
     "price": "10199.-",
@@ -36,6 +40,7 @@
     "qty": "1"
   },
   {
+    "goodsId":"1294453",
     "id": "71235746",
     "modelName": "Телевизор LG 43LJ594V",
     "price": "14999.-",
@@ -45,6 +50,7 @@
     "qty": "1"
   },
   {
+    "goodsId":"1341193",
     "id": "71249128",
     "modelName": "Ноутбук ACER A515-51G-31MY (NX.GVMEU.017)",
     "price": "14999.-",

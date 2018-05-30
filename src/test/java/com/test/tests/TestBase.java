@@ -5,10 +5,8 @@ import com.test.pages.GooglePage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.CustomTestListener;
 import io.qameta.allure.Step;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import io.restassured.RestAssured;
+import org.testng.annotations.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +20,15 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 @Listeners({CustomTestListener.class})
 public class TestBase {
 //    WebDriver driver;
+
+    @BeforeSuite
+    public void configure() throws IOException {
+        Properties configProp= new Properties();
+        configProp.load(new FileInputStream("./src/test/resources/selenideConfig.properties"));
+
+        RestAssured.baseURI = configProp.getProperty("baseUri");
+        RestAssured.basePath = "";
+    }
 
     @BeforeClass
     public void setUp() throws IOException {

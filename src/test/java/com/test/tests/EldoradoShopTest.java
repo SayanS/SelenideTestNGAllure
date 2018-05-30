@@ -15,9 +15,9 @@ import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
 import com.test.util.Converters;
 import com.test.util.EndPoint;
-import com.test.util.RestAssuredConfiguration;
+import com.test.util.HttpMethods;
+import com.test.util.RestApiUtils;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -93,19 +93,17 @@ public class EldoradoShopTest extends TestBase {
         shops.forEach(shop -> citiesJson.add(shop.getName().split(", ")[1]));
     }
 
-    @Test(enabled = false, groups = {"nonexecutable"})
+    @Test(enabled = false, groups = {"new"})
     public void isResponseContainsAllCities() {
-        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
         Response response =
-                new RestAssuredConfiguration().getResponse(requestSpecification, EndPoint.GET_ALL_SHOPS, HttpStatus.SC_OK);
+                new HttpMethods().get(EndPoint.GET_ALL_SHOPS, HttpStatus.SC_OK);
 
         Assert.assertEquals(response.statusCode(), 200);
     }
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaRestAssured(TreeSet<String> expectedCities) {
-        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
-        given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
+        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES,HttpStatus.SC_OK).
                 then().statusCode(200).log().all();
         List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
 
@@ -116,8 +114,7 @@ public class EldoradoShopTest extends TestBase {
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
-        RequestSpecification requestSpecification = new RestAssuredConfiguration().getRequestSpecification();
-        given().spec(requestSpecification).get(EndPoint.GET_ALL_CITIES).
+        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES,HttpStatus.SC_OK).
                 then().statusCode(200).log().all();
         List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
         Assert.assertTrue(actualCities.containsAll(expectedCities));
@@ -169,7 +166,7 @@ public class EldoradoShopTest extends TestBase {
         checkoutPage.checkoutCart.ensureThatCartContains(products);
     }
 
-    @Test(enabled = true, groups = {"all"})
+    @Test(enabled = true, groups = {"nonexecutable"})
     public void checkoutProcess() throws InterruptedException {
         Product product = new Product();
         HomePage homePage = onHomePage().clearCart();
@@ -219,7 +216,7 @@ public class EldoradoShopTest extends TestBase {
 //        mapper.convertValue(map, User.class);
     }
 
-    @Test(enabled = true, groups = {"new"})
+    @Test(enabled = true, groups = {"nonexecutable"})
     public void checkAbilityToAddProductsToCart() throws InterruptedException {
         List<Product> products = dataFromJson.getProducts();
         HomePage homePage = onHomePage().clearCart();
@@ -238,9 +235,29 @@ public class EldoradoShopTest extends TestBase {
         });
 
         products.forEach(product -> checkoutPage.checkoutCart.ensureThatCartContains(products));
+    }
 
+    @Test(enabled = true, groups = {"nonexecutable"})
+    public void checkIncrementQty() throws InterruptedException {
+        RestApiUtils restApiUtils=new RestApiUtils();
+        List<Product> products = dataFromJson.getProducts();
+        HomePage homePage = onHomePage().clearCart();
+        CheckoutPage checkoutPage;
+
+       Integer remains=new RestApiUtils().getGoodsRemains("13456585");
+
+
+        restApiUtils.getGoodsRemains(products.get(0).getGoodsId());
+
+        checkoutPage=homePage.headerSection.clickCartIcon();
+
+        products.forEach(product -> {
+            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
+            product.incQty();
+        });
 
     }
+
 
 }
 

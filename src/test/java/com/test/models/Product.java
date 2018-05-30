@@ -1,6 +1,7 @@
 package com.test.models;
 
 public class Product {
+    private String goodsId;
     private String id;
     private String modelName;
     private String price;
@@ -20,6 +21,14 @@ public class Product {
     }
 
     public Product() {
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getId() {
