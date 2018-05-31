@@ -16,7 +16,6 @@ import com.test.pages.homepage.HomePage;
 import com.test.util.Converters;
 import com.test.util.EndPoint;
 import com.test.util.HttpMethods;
-import com.test.util.RestApiUtils;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
@@ -239,23 +238,21 @@ public class EldoradoShopTest extends TestBase {
 
     @Test(enabled = true, groups = {"nonexecutable"})
     public void checkIncrementQty() throws InterruptedException {
-        RestApiUtils restApiUtils=new RestApiUtils();
         List<Product> products = dataFromJson.getProducts();
         HomePage homePage = onHomePage().clearCart();
-        CheckoutPage checkoutPage;
+        products.forEach(product -> {
+            homePage.headerSection
+                    .searchForProductByID(product.getId())
+                    .clickOnBuyProductButton().ensureThatNotificationContains(product.getModelName());
+        });
 
-       Integer remains=new RestApiUtils().getGoodsRemains("13456585");
-
-
-        restApiUtils.getGoodsRemains(products.get(0).getGoodsId());
-
-        checkoutPage=homePage.headerSection.clickCartIcon();
+        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
 
         products.forEach(product -> {
             checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
-            product.incQty();
+            product.setQty(product.getQty()+1);
+            checkoutPage.checkoutCart.ensureThatCartContains(product);
         });
-
     }
 
 
