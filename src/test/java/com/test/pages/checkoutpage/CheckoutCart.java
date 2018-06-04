@@ -52,7 +52,9 @@ public class CheckoutCart extends BasePage{
     @Step
     public CheckoutPage ensureThatCartContains(Product product) {
             SelenideElement productContainer = getProductContainer(product.getModelName());
-            productContainer.find(PRICE).shouldHave(exactText(product.getPrice()));
+            productContainer
+                    .find(PRICE)
+                    .shouldHave(exactText(product.getPrice()));
             productContainer.find(QTY).shouldHave(text(product.getQty().toString()));
         return page(CheckoutPage.class);
     }

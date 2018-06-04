@@ -13,6 +13,7 @@ import com.test.pages.NodeItemPage;
 import com.test.pages.ShopsPage;
 import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
+import com.test.steps.HomePageSteps;
 import com.test.util.Converters;
 import com.test.util.EndPoint;
 import com.test.util.HttpMethods;
@@ -29,8 +30,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 
 @Test(dataProviderClass = EldoradoShopDataProviders.class)
-public class EldoradoShopTest extends TestBase {
-    DataFromJson dataFromJson = new DataFromJson();
+public class EldoradoShopTest extends TestBase{
+    private DataFromJson dataFromJson = new DataFromJson();
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
@@ -102,7 +103,7 @@ public class EldoradoShopTest extends TestBase {
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaRestAssured(TreeSet<String> expectedCities) {
-        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES,HttpStatus.SC_OK).
+        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES, HttpStatus.SC_OK).
                 then().statusCode(200).log().all();
         List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
 
@@ -113,7 +114,7 @@ public class EldoradoShopTest extends TestBase {
 
     @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isGetCityResponseContainsAllCitiesViaTestNg(TreeSet<String> expectedCities) {
-        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES,HttpStatus.SC_OK).
+        (new HttpMethods()).get(EndPoint.GET_ALL_CITIES, HttpStatus.SC_OK).
                 then().statusCode(200).log().all();
         List<String> actualCities = given().get(EndPoint.GET_ALL_CITIES).body().path("data.title");
         Assert.assertTrue(actualCities.containsAll(expectedCities));
@@ -225,7 +226,7 @@ public class EldoradoShopTest extends TestBase {
                     .clickOnBuyProductButton().ensureThatNotificationContains(product.getModelName());
         });
 
-        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
+        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
         checkoutPage.checkoutCart.ensureThatCartContains(products);
 
         products.forEach(product -> {
@@ -240,17 +241,30 @@ public class EldoradoShopTest extends TestBase {
     public void checkIncrementQty() throws InterruptedException {
         List<Product> products = dataFromJson.getProducts();
         HomePage homePage = onHomePage().clearCart();
-        products.forEach(product -> {
-            homePage.headerSection
-                    .searchForProductByID(product.getId())
-                    .clickOnBuyProductButton().ensureThatNotificationContains(product.getModelName());
-        });
+        HomePageSteps homePageSteps = new HomePageSteps();
+        homePageSteps.addToCart(products);
 
-        CheckoutPage checkoutPage=homePage.headerSection.clickCartIcon();
+        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
 
         products.forEach(product -> {
             checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
-            product.setQty(product.getQty()+1);
+            product.incQty();
+            checkoutPage.checkoutCart.ensureThatCartContains(product);
+        });
+    }
+
+    @Test(enabled = true, groups = {"nonexecutable"})
+    public void checkCartTotal() throws InterruptedException {
+        List<Product> products = dataFromJson.getProducts();
+        HomePage homePage = onHomePage().clearCart();
+        HomePageSteps homePageSteps=new HomePageSteps();
+        homePageSteps.addToCart(products);
+
+        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
+
+        products.forEach(product -> {
+            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
+            product.incQty();
             checkoutPage.checkoutCart.ensureThatCartContains(product);
         });
     }

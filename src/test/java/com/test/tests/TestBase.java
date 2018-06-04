@@ -20,7 +20,6 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 @Listeners({CustomTestListener.class})
 public class TestBase {
 //    WebDriver driver;
-
     @BeforeSuite
     public void configure() throws IOException {
         Properties configProp= new Properties();

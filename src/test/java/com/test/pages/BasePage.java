@@ -3,12 +3,14 @@ package com.test.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
+import org.springframework.stereotype.Component;
 
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
+@Component
 public abstract class BasePage {
     public HeaderSection headerSection=page(HeaderSection.class);
     private String notification=".notification.notification-visible div";

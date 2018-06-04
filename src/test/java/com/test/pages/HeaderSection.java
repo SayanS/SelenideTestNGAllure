@@ -52,17 +52,19 @@ public class HeaderSection {
         $(GLOBAL_SEARCH_FIELD).click();
 //        while (!$(GLOBAL_SEARCH_FIELD).getAttribute("value").equals("")) {
 //            $(GLOBAL_SEARCH_FIELD).val(Keys.BACK_SPACE.toString());
-            $(GLOBAL_SEARCH_FIELD).setValue("");
+        $(GLOBAL_SEARCH_FIELD).setValue("");
         $(GLOBAL_SEARCH_FIELD).clear();
-            $(GLOBAL_SEARCH_FIELD).pressEnter();
+        $(GLOBAL_SEARCH_FIELD).pressEnter();
 //        }
         $(GLOBAL_SEARCH_FIELD)
                 .val(productID)
                 .waitUntil(Condition.attribute("value", productID), 5000);
         $(GLOBAL_SEARCH_FIELD).click();
-        $(".image-place>img.loading").waitUntil(appear, 5000);
-        $(".image-place>img.loading").waitUntil(disappear, 15000);
+
+//        $(".image-place>img.loading").waitUntil(appear, 5000);
+//        $(".image-place>img.loading").waitUntil(disappear, 15000);
         $(GLOBAL_SEARCH_FIELD).pressEnter();
+
         return page(ProductPage.class);
     }
 

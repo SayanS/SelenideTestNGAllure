@@ -10,7 +10,8 @@ public class Product {
     private String oldPrice;
     private Integer qty;
 
-    public Product(String id, String modelName, String price, String priceDiscount, String promotionPrice, String oldPrice, Integer qty) {
+    public Product(String goodsId, String id, String modelName, String price, String priceDiscount, String promotionPrice, String oldPrice, Integer qty) {
+        this.goodsId=goodsId;
         this.id = id;
         this.modelName = modelName;
         this.price = price;
@@ -75,7 +76,7 @@ public class Product {
         return oldPrice;
     }
 
-    public void setOldPrice(String priceDiscount) {
+    public void setOldPrice(String oldPrice) {
         this.oldPrice = oldPrice;
     }
 
@@ -94,6 +95,6 @@ public class Product {
                 .replace(".00", ".-").replace(".0",".-");
 
     }
-
+         
 
 }
