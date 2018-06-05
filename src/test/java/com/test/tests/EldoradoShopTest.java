@@ -1,5 +1,6 @@
 package com.test.tests;
 
+import com.codeborne.selenide.testng.SoftAsserts;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,13 +14,14 @@ import com.test.pages.NodeItemPage;
 import com.test.pages.ShopsPage;
 import com.test.pages.checkoutpage.CheckoutPage;
 import com.test.pages.homepage.HomePage;
-import com.test.steps.HomePageSteps;
+import com.test.steps.CommonSteps;
 import com.test.util.Converters;
 import com.test.util.EndPoint;
 import com.test.util.HttpMethods;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -29,11 +31,12 @@ import java.util.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 
+@Listeners(SoftAsserts.class)
 @Test(dataProviderClass = EldoradoShopDataProviders.class)
-public class EldoradoShopTest extends TestBase{
+public class EldoradoShopTest extends TestBase {
     private DataFromJson dataFromJson = new DataFromJson();
 
-    @Test(dataProvider = "shopCities", enabled = false, groups = {"smoke"})
+    @Test(dataProvider = "shopCities", enabled = false, groups = {"nonexecutable"})
     public void isAllCitiesDisplayedOnShopsPage(TreeSet<String> shopCities) {
         ShopsPage shopsPage = (ShopsPage) onHomePage().headerSection.selectMenuItem("Магазины");
         shopsPage.isShownAllCities(shopCities);
@@ -93,7 +96,7 @@ public class EldoradoShopTest extends TestBase{
         shops.forEach(shop -> citiesJson.add(shop.getName().split(", ")[1]));
     }
 
-    @Test(enabled = false, groups = {"new"})
+    @Test(enabled = false, groups = {"nonexecutable"})
     public void isResponseContainsAllCities() {
         Response response =
                 new HttpMethods().get(EndPoint.GET_ALL_SHOPS, HttpStatus.SC_OK);
@@ -216,58 +219,29 @@ public class EldoradoShopTest extends TestBase{
 //        mapper.convertValue(map, User.class);
     }
 
-    @Test(enabled = true, groups = {"nonexecutable"})
+    @Test(enabled = true, groups = {"all"})
     public void checkAbilityToAddProductsToCart() throws InterruptedException {
         List<Product> products = dataFromJson.getProducts();
+        Double cartTotal=0.00;
         HomePage homePage = onHomePage().clearCart();
-        products.forEach(product -> {
-            homePage.headerSection
-                    .searchForProductByID(product.getId())
-                    .clickOnBuyProductButton().ensureThatNotificationContains(product.getModelName());
-        });
+        (new CommonSteps()).addToCart(products);
 
         CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
         checkoutPage.checkoutCart.ensureThatCartContains(products);
 
-        products.forEach(product -> {
-            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
-            product.incQty();
-        });
+        for(int i=0;i<products.size();i++){
+            checkoutPage.checkoutCart.clickOnIncQtyFor(products.get(i).getModelName());
+            products.get(i).incQty();
+            checkoutPage.checkoutCart.ensureThatCartContains(products.get(i));
+            cartTotal=cartTotal+products.get(i).getPriceAsDouble();
+        }
 
-        products.forEach(product -> checkoutPage.checkoutCart.ensureThatCartContains(products));
+        checkoutPage.checkoutCart.ensureThatCartContains(products);
+
+        checkoutPage.checkoutCart.ensureThatCartTotalEqualTo(Double.toString(cartTotal));
+
     }
 
-    @Test(enabled = true, groups = {"nonexecutable"})
-    public void checkIncrementQty() throws InterruptedException {
-        List<Product> products = dataFromJson.getProducts();
-        HomePage homePage = onHomePage().clearCart();
-        HomePageSteps homePageSteps = new HomePageSteps();
-        homePageSteps.addToCart(products);
-
-        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
-
-        products.forEach(product -> {
-            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
-            product.incQty();
-            checkoutPage.checkoutCart.ensureThatCartContains(product);
-        });
-    }
-
-    @Test(enabled = true, groups = {"nonexecutable"})
-    public void checkCartTotal() throws InterruptedException {
-        List<Product> products = dataFromJson.getProducts();
-        HomePage homePage = onHomePage().clearCart();
-        HomePageSteps homePageSteps=new HomePageSteps();
-        homePageSteps.addToCart(products);
-
-        CheckoutPage checkoutPage = homePage.headerSection.clickCartIcon();
-
-        products.forEach(product -> {
-            checkoutPage.checkoutCart.clickOnIncQtyFor(product.getModelName());
-            product.incQty();
-            checkoutPage.checkoutCart.ensureThatCartContains(product);
-        });
-    }
 
 
 }

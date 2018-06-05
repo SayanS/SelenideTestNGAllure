@@ -55,6 +55,8 @@ public class HeaderSection {
         $(GLOBAL_SEARCH_FIELD).setValue("");
         $(GLOBAL_SEARCH_FIELD).clear();
         $(GLOBAL_SEARCH_FIELD).pressEnter();
+        $(GLOBAL_SEARCH_FIELD).waitUntil(Condition.value(""),1000);
+
 //        }
         $(GLOBAL_SEARCH_FIELD)
                 .val(productID)
@@ -75,7 +77,7 @@ public class HeaderSection {
     }
 
     @Step
-    public CheckoutPage clickCartIcon() throws InterruptedException {
+    public CheckoutPage clickCartIcon() {
         $(CART_ICON).click();
         return page(CheckoutPage.class);
     }

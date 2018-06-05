@@ -16,6 +16,7 @@ import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
+
 @Test(groups = {"new", "all"})
 @Listeners({CustomTestListener.class})
 public class TestBase {

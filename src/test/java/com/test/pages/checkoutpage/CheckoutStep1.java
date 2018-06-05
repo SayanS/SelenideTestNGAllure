@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
 
-public class CheckoutStep1 extends CheckoutPage{
+public class CheckoutStep1{
     String STEP1_FORM_XPATH =".//div[contains(@class,'contact-details')]/div[@class='content']";
 
     By CONTACT_DETAILS_FIELD_NAME = By.xpath(STEP1_FORM_XPATH +"//input[@name='name']");

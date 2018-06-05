@@ -11,7 +11,13 @@ public class CheckoutPage extends BasePage {
 
     private String CHECKOUT_STEPS_TITLES_XPATH = "(.//div[@class='title-number']/ancestor::div/div[@class='content']/preceding-sibling::div[@class='title'])";
 
-    public CheckoutCart checkoutCart = new CheckoutCart();
+    public CheckoutCart checkoutCart;
+    public CheckoutStep1 checkoutStep1;
+
+    public CheckoutPage(){
+        this.checkoutCart=new CheckoutCart();
+        this.checkoutStep1=new CheckoutStep1();
+    }
 
     @Step
     public CheckoutStep1 selectCheckoutStep1() {

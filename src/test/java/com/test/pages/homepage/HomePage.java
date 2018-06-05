@@ -12,8 +12,13 @@ public class HomePage extends BasePage {
     String PAYMENT_TYPES = "form .payment-types.order-processing-part";
     String OFFER_DETAILS = "form .offer-details.order-processing-part";
 
-    public ProductSection bestSuggestions=new ProductSection(BEST_SUGGESTIONS);
-    public ProductSection seasonSuggestions=new ProductSection(SEASON_SUGGESTIONS);
+    public ProductSection bestSuggestions;
+    public ProductSection seasonSuggestions;
+
+    public HomePage(){
+        this.bestSuggestions=new ProductSection(BEST_SUGGESTIONS);
+        this.seasonSuggestions=new ProductSection(SEASON_SUGGESTIONS);
+    }
 
     @Step
     public HomePage clearCart() throws InterruptedException {

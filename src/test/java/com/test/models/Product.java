@@ -95,6 +95,9 @@ public class Product {
                 .replace(".00", ".-").replace(".0",".-");
 
     }
-         
+
+    public Double getPriceAsDouble(){
+        return Double.valueOf(price.replace("-","00"));
+    }
 
 }
