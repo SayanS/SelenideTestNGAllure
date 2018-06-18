@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.open;
 public class GmailSignInTest extends TestBase {
 
     @Parameters({ "url" })
-    @Test(dataProvider = "userProvider", groups={"all"})
+    @Test(dataProvider = "userProvider", groups={"nonexecutable"})
     public void signIn(User user, ITestContext context) throws InterruptedException {
 //        onGooglePage(context.getCurrentXmlTest().getParameter("url"))
 //                open(context.getCurrentXmlTest().getParameter("url"),GooglePage.class)
