@@ -1,6 +1,5 @@
 package com.test.tests;
 
-import com.codeborne.selenide.testng.SoftAsserts;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +20,6 @@ import com.test.util.HttpMethods;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -31,7 +29,6 @@ import java.util.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 
-@Listeners(SoftAsserts.class)
 @Test(dataProviderClass = EldoradoShopDataProviders.class)
 public class EldoradoShopTest extends TestBase {
     private DataFromJson dataFromJson = new DataFromJson();
